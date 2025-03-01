@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Search, Bell, ShoppingBag } from "lucide-react";
-import { Input, Button, Avatar, AvatarImage, AvatarFallback } from "../ui";
+import { Bell, ShoppingBag } from "lucide-react";
+import { Button, Avatar, AvatarImage, AvatarFallback } from "../ui";
 import MainNav from "./MainNav";
 
 const Header: React.FC = () => {
@@ -9,22 +9,14 @@ const Header: React.FC = () => {
       <div className="container flex h-16 items-center gap-4">
         <div className="flex items-center gap-6">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-xl md:text-2xl font-bold tracking-wider text-white">Auto Fix</span>
+            <span className="text-xl md:text-2xl font-extralight tracking-wider text-white">Auto<span className="font-semibold text-blue-500">Fix</span></span>
           </Link>
 
         </div>
 
-        <MainNav className="mx-6 hidden lg:flex" />
+        <MainNav className="ml-16 hidden lg:flex" />
 
-        <div className="flex items-center gap-4 ml-auto">
-          <div className="hidden sm:flex relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-[200px] pl-9 bg-gray-900 border-gray-800 text-white duration-300 ease-in placeholder:text-gray-400 focus:ring-blue-500"
-            />
-          </div>
+        <div className="flex items-center gap-6 ml-auto">
 
           <Button variant="ghost" size="icon" className="relative text-gray-400 hover:text-white duration-300 ease-in">
             <Bell className="h-5 w-5" />

@@ -97,17 +97,17 @@ const CircularReviewScroller = () => {
         {/* Navigation buttons */}
         <Button
           size="icon"
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full bg-white shadow-md"
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full bg-white shadow-md hover:bg-gray-50"
           onClick={prevSlide}
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-4 w-4 text-black" />
         </Button>
         <Button
           size="icon"
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 rounded-full bg-white shadow-md"
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 rounded-full bg-white shadow-md hover:bg-gray-50"
           onClick={nextSlide}
         >
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4 text-black" />
         </Button>
 
         {/* Pagination indicators */}

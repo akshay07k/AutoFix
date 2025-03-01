@@ -1,12 +1,11 @@
 import React from 'react'
 import { ArrowRight, Settings } from "lucide-react"
 import { Button } from '../ui'
-import { Header, MovingCar, CustomerReview, Footer } from '..'
+import { MovingCar, CustomerReview } from '..'
 
 const Home: React.FC = () => {
   return (
-    <div className="flex w-full min-h-screen flex-col bg-[#0A0A0A]">
-      <Header />
+    <>
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center">
@@ -124,11 +123,8 @@ const Home: React.FC = () => {
 
         {/* Customer reviews */}
         <CustomerReview />
-
-        {/* Footer Section */}
-        <Footer />
       </main>
-    </div>
+    </>
   )
 }
 
