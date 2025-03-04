@@ -70,7 +70,7 @@ const CircularReviewScroller = () => {
             onHoverStart={() => setAutoplay(false)}
           >
             {reviews.map((review) => (
-              <div key={review.id} className="w-full flex-shrink-0 px-14 py-4 min-h-52 bg-gray-50 rounded-xl">
+              <div key={review.id} className="w-full flex-shrink-0 px-10 py-4 min-h-52  rounded-xl shadow-sm">
                 <Card className="h-full">
                   <CardContent className="p-6">
                     <div className="flex flex-col h-full">
