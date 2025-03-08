@@ -1,7 +1,7 @@
 import React from 'react'
 import {
     LayoutDashboard,
-    Users,
+    UserCog,
     ShoppingCart,
     Settings,
     ChevronDown,
@@ -52,7 +52,7 @@ const SideBar: React.FC<SidebarProps> = ({isSidebarCollapsed, isSidebarOpen, set
             <nav className="flex-1 overflow-y-auto">
             {[
                 { icon: LayoutDashboard, label: 'Dashboard' },
-                { icon: Users, label: 'Users' },
+                { icon: UserCog, label: 'Mechanics' },
                 { icon: ShoppingCart, label: 'Orders' },
                 { icon: Settings, label: 'Settings' },
             ].map((item, index) => (

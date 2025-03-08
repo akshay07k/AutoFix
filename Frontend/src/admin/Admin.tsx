@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Header, SideBar } from '.'
 import { Outlet } from 'react-router-dom';
 
-function Admin() {
+const Admin: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -37,4 +37,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default Admin
