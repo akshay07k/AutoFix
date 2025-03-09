@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
 import { Home } from "../components";
 import ErrorPage from "../pages/ErrorPage";
-import { Admin, Dashboard, Mechanics } from "../admin";
+import { Admin, Dashboard, Mechanics, Orders } from "../admin";
 
 export const router = createBrowserRouter([
     {
@@ -32,6 +32,10 @@ export const router = createBrowserRouter([
             {
                 path: "mechanics",
                 element: <Mechanics />
+            },
+            {
+                path: "orders",
+                element: <Orders />
             }
         ]
     },
