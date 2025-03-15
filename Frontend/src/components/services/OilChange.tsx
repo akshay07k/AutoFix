@@ -1,33 +1,169 @@
-import React from 'react'
+import React from 'react';
+import { Button } from '../ui';
+import { Check } from 'lucide-react';
 
 const OilChange: React.FC = () => {
   return (
-    <div className='mx-auto max-w-7xl'>
-        <div className='relative h-[350px] rounded-2xl overflow-hidden mb-12'>
-            <img
-            src='https://images.pexels.com/photos/13065691/pexels-photo-13065691.jpeg?auto=format&fit=crop&w=1920&q=80'
-            alt='Auto mechanic working'
-            className='w-full h-full object-cover'
-            />
-            <div className='absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 flex items-center justify-center'>
-            <div className='p-8 md:p-12 max-w-2xl'>
-                <h1 className='text-2xl lg:text-4xl md:text-5xl font-bold text-white mb-4 text-center'>
-                Oil Change
-                </h1>
-                <p className='text-md lg:text-lg text-gray-200 mb-8 text-center'>
-                Changing your oil per your vehicle maintenance schedule is ALWAYS a good idea!
-                </p>
-                <div className='flex items-center justify-center'>
-                <button className='bg-blue-600/80 text-white px-8 py-3 rounded-lg text-md lg:text-lg font-semibold hover:bg-blue-700 transition-colors'>
+    <div className="mx-auto max-w-7xl">
+      {/* Hero Section */}
+      <div className="relative h-[300px] rounded-2xl overflow-hidden mb-12">
+        <img
+          src="https://images.pexels.com/photos/13065691/pexels-photo-13065691.jpeg?auto=format&fit=crop&w=1920&q=80"
+          alt="Auto mechanic performing oil change"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 flex items-center justify-center">
+          <div className="p-8 md:p-12 max-w-2xl text-center">
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+              Professional Oil Change Services
+            </h1>
+            <p className="text-md md:text-lg text-gray-200 mb-8">
+              Keep your engine running smoothly with our expert oil change services.
+              Regular maintenance is the key to vehicle longevity!
+            </p>
+            {/* <div className='flex items-center justify-center'>
+                <Button className='bg-blue-600/80 text-white px-8 py-3 rounded-lg text-md lg:text-lg font-semibold hover:bg-blue-700'>
                 Book Now!
-                </button>
-                </div>
-            </div>
-            </div>
-
+                </Button>
+            </div> */}
+          </div>
         </div>
-    </div>
-  )
-}
+      </div>
 
-export default OilChange
+      {/* Service Packages */}
+      <section className="mb-16">
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-8 text-center">
+          Choose Your Oil Change Package
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {services.map((service, index) => (
+            <div
+              key={index}
+              className={`bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative ${service.recommended ? "border-2 border-blue-500" : "border border-gray-100"}`}
+            >
+              {service.recommended && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-sm">
+                  Recommended
+                </div>
+              )}
+              <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
+                {service.title}
+              </h3>
+              <div className="text-2xl lg:text-3xl font-bold text-blue-500 mb-6">
+                Rs. {service.price}
+                <span className="text-sm font-normal text-gray-500"> /service</span>
+              </div>
+              <ul className="space-y-4 mb-8">
+                {service.features.map((feature, featureIndex) => (
+                  <li key={featureIndex} className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-1" />
+                    <span className="text-gray-600">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-semibold">
+                Book This Package
+              </Button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Informative Section */}
+      <section className="mb-12">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">
+          Why Regular Oil Changes Matter
+        </h2>
+        <p className="text-gray-700 mb-6 text-center max-w-3xl mx-auto">
+          Regular oil changes are crucial for maintaining your vehicle's performance and extending its lifespan. 
+          Fresh oil keeps your engine clean, reduces wear, and helps maintain optimal temperature.
+        </p>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-3 text-gray-800">
+              Benefits of Timely Oil Changes
+            </h3>
+            <ul className="space-y-2 text-gray-700">
+              <li className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-green-500" />
+                Improves engine efficiency and performance
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-green-500" />
+                Extends engine lifespan
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-green-500" />
+                Enhances fuel economy
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-green-500" />
+                Reduces harmful emissions
+              </li>
+            </ul>
+          </div>
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-3 text-gray-800">
+              Signs You Need an Oil Change
+            </h3>
+            <ul className="space-y-2 text-gray-700">
+              <li className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-green-500" />
+                Dark, dirty oil on dipstick
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-green-500" />
+                Unusual engine noise or knocking
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-green-500" />
+                Oil change warning light on dashboard
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-green-500" />
+                Excessive exhaust smoke
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+};
+
+const services = [
+  {
+    title: 'Regular Oil Change',
+    price: '599',
+    features: [
+      'Conventional oil',
+      'Oil filter replacement',
+      'Basic vehicle inspection',
+      '4,000 Km/5 month warranty',
+    ],
+  },
+  {
+    title: 'Synthetic Blend',
+    price: '1199',
+    features: [
+      'Synthetic blend oil',
+      'Premium oil filter',
+      'Comprehensive inspection',
+      '10,000 Km/12 month warranty',
+    ],
+    recommended: true,
+  },
+  {
+    title: 'Full Synthetic',
+    price: '1999',
+    features: [
+      'Full synthetic oil',
+      'High-performance filter',
+      'Detailed inspection & fluid check',
+      '15,000 Km/18 month warranty',
+    ],
+  },
+];
+
+export default OilChange;

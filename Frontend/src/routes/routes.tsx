@@ -5,6 +5,10 @@ import {
     OilChange, 
     AllServices,
     Services,
+    Brake,
+    Wash,
+    Battery,
+    Consultation
  } from "../components";
 import ErrorPage from "../pages/ErrorPage";
 import { Admin, Dashboard, Mechanics, Orders } from "../admin";
@@ -30,6 +34,22 @@ export const router = createBrowserRouter([
                     {
                         path: "oil-change",
                         element: <OilChange />
+                    },
+                    {
+                        path: "battery-replacement",
+                        element: <Battery />
+                    },
+                    {
+                        path: "brakes-replacement",
+                        element: <Brake />
+                    },
+                    {
+                        path: "car-wash",
+                        element: <Wash />
+                    },
+                    {
+                        path: "consultation",
+                        element: <Consultation />
                     }
                 ]
             }

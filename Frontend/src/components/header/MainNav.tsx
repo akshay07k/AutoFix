@@ -1,5 +1,5 @@
 import React, {  } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { cn } from "../../lib/utils";
 import { ChevronDown } from "lucide-react";
 
@@ -60,12 +60,12 @@ const MainNav: React.FC<{ className?: string }> = ({ className }) => {
             // onMouseEnter={() => setIsDropdownOpen(true)}
             // onMouseLeave={() => setTimeout(() => setIsDropdownOpen(false), 300)}
           >
-            <Link
+            <NavLink
               to={item.href}
-              className="text-sm md:text-base text-gray-200 transition-all hover:text-white duration-300 ease-in-out flex items-center"
+              className={({isActive}) => `${isActive ? "text-blue-500 font-semibold" : "text-gray-200 hover:text-white"} text-sm md:text-base transition-all  duration-300 ease-in-out flex items-center `}
             >
               {item.title} {item?.icon}
-            </Link>
+            </NavLink>
             {/* {isDropdownOpen && (
               <div className="absolute left-0 top-4/5 mt-2 w-48 bg-black/60 backdrop:backdrop-blur shadow-lg rounded-lg">
                 {services.map((service, index) => (

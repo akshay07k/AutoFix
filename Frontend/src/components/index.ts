@@ -8,7 +8,7 @@ import Services from "./services/Services";
 import OilChange from "./services/OilChange";
 import Brake from "./services/Brake";
 import Wash from "./services/Wash";
-import Tire from "./services/Tire";
+import Battery from "./services/Battery";
 import Consultation from "./services/Consultation";
 import AllServices from "./services/AllServices";
 
@@ -24,6 +24,6 @@ export {
     AllServices,
     Brake,
     Wash,
-    Tire,
+    Battery,
     Consultation
 }

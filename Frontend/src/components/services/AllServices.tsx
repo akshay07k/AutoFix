@@ -1,6 +1,7 @@
 import React from 'react'
 import { Clock, Shield, Trophy, Wrench } from 'lucide-react'
 import { Link } from 'react-router-dom';
+import { Button } from '../ui';
 
 const AllServices: React.FC = () => {
     const features = [
@@ -44,9 +45,9 @@ const AllServices: React.FC = () => {
                     Keep your vehicle running smoothly with our expert maintenance services.
                     Book your appointment today!
                     </p>
-                    <button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors">
+                    <Button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700">
                     Schedule Service
-                    </button>
+                    </Button>
                 </div>
                 </div>
             </div>

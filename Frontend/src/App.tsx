@@ -1,9 +1,15 @@
-// import { useState } from 'react'
+import { useEffect } from 'react'
 import './App.css'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { Header, Footer } from './components'
 
+
 function App() {
+  const location = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
 
   return (
     <>
