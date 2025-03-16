@@ -1,8 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../ui';
-import { Check } from 'lucide-react';
+import { Check, X } from 'lucide-react';
+import { FormData, Service } from './Type.Services';
+import { useForm } from 'react-hook-form';
 
 const Battery: React.FC = () => {
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const [selectedService, setSelectedService] = useState<Service | null>(null)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm<FormData>({
+    defaultValues: {
+      carMake: '',
+      carModel: '',
+      year: '',
+      licensePlate: ''
+    }
+  })
+
+  const onSubmit = (data: FormData) => {
+    return {
+      addToCart: (): void => {
+        console.log('Added to cart:', { service: selectedService, carDetails: {...data} });
+        closeForm();
+      },
+      bookNow: (): void => {
+        console.log('Booked:', { service: selectedService, carDetails: {...data} });
+        closeForm();
+      }
+    };
+  };
+
+  const handleBookNow = () => {
+    setSelectedService(services[0])
+    setIsFormOpen(true)
+  }
+  
+  const closeForm = () => {
+    setIsFormOpen(false)
+    setSelectedService(null)
+    reset()
+  }
+
   return (
     <div className="mx-auto max-w-7xl">
       {/* Hero Section */}
@@ -21,7 +64,9 @@ const Battery: React.FC = () => {
               Power up your vehicle with our reliable battery replacement service. A fresh battery keeps you going.
             </p>
             <div className='flex items-center justify-center'>
-                <Button className='bg-blue-600/80 text-white px-8 py-3 rounded-lg text-md lg:text-lg font-semibold hover:bg-blue-700'>
+                <Button 
+                onClick={() => handleBookNow()}
+                className='bg-blue-600/80 text-white px-8 py-3 rounded-lg text-md lg:text-lg font-semibold hover:bg-blue-700'>
                 Book Now!
                 </Button>
             </div>
@@ -109,11 +154,107 @@ const Battery: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Book Now Section */}
+      {isFormOpen && (
+        <div className='fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4'>
+          <div className='bg-white rounded-2xl p-6 w-full max-w-md shadow-xl relative'>
+            <button
+              onClick={closeForm}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            <h2 className='text-2xl font-bold text-gray-800 mb-6'>Vehicle Details</h2>
+
+            <form className="space-y-6">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Car Make <span className="text-red-500">*</span>
+                </label>
+                <input
+                  {...register('carMake', { required: 'Car make is required' })}
+                  className={`w-full px-4 py-2 rounded-lg border ${errors.carMake ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                  placeholder="Toyota"
+                />
+                {errors.carMake && (
+                  <p className="text-red-500 text-xs">{errors.carMake.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Car Model <span className="text-red-500">*</span>
+                </label>
+                <input
+                  {...register('carModel', { required: 'Car model is required' })}
+                  className={`w-full px-4 py-2 rounded-lg border ${errors.carModel ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                  placeholder="Corolla"
+                />
+                {errors.carModel && (
+                  <p className="text-red-500 text-xs">{errors.carModel.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Year <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  {...register('year', { 
+                    required: 'Year is required',
+                    min: { value: 1900, message: 'Year must be after 1900' },
+                    max: { value: new Date().getFullYear(), message: 'Year cannot be in the future' }
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${errors.year ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                  placeholder="2020"
+                />
+                {errors.year && (
+                  <p className="text-red-500 text-xs">{errors.year.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  License Plate <span className="text-red-500">*</span>
+                </label>
+                <input
+                  {...register('licensePlate', { required: 'License plate is required' })}
+                  className={`w-full px-4 py-2 rounded-lg border ${errors.licensePlate ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                  placeholder="ABC-123"
+                />
+                {errors.licensePlate && (
+                  <p className="text-red-500 text-xs">{errors.licensePlate.message}</p>
+                )}
+              </div>
+
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  onClick={handleSubmit((data: FormData) => onSubmit(data).addToCart())}
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold"
+                >
+                  Add to Cart
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleSubmit((data: FormData) => onSubmit(data).bookNow())}
+                  className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold"
+                >
+                  Book Now
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-const services = [
+const services: Service[] = [
   {
     title: 'Battery Replacement',
     price: '2499',
