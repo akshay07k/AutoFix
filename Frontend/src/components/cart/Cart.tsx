@@ -1,23 +1,11 @@
 import React from 'react';
 import { Button } from '../ui';
 import { Trash2 } from 'lucide-react';
+import { CartItem } from '../services/Type.Services';
 
-
-interface CartItem {
-  service: {
-    title: string;
-    price: string;
-    features: string[];
-  };
-  carDetails: {
-    carMake: string;
-    carModel: string;
-    year: string;
-    licensePlate: string;
-  };
-}
 
 const Cart: React.FC = () => {
+
   const cartItems: CartItem[] = [
     {
       service: {
@@ -60,6 +48,7 @@ const Cart: React.FC = () => {
   const totalPrice = cartItems.reduce((sum, item) => {
     return sum + parseInt(item.service.price);
   }, 0);
+
 
   return (
     <div className="bg-gradient-to-b from-gray-50 to-gray-100 py-16">
@@ -159,6 +148,7 @@ const Cart: React.FC = () => {
                   </div>
                 </div>
                 <Button
+                  
                   className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold cursor-pointer"
                 >
                   Proceed to Checkout

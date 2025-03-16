@@ -9,7 +9,8 @@ import {
     Wash,
     Battery,
     Consultation,
-    Cart
+    Cart,
+    Booking
  } from "../components";
 import ErrorPage from "../pages/ErrorPage";
 import { Admin, Dashboard, Mechanics, Orders } from "../admin";
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
             {
                 path: "",
                 element: <Home />
+            },
+            {
+                path: "book",
+                element: <Booking />
             },
             {
                 path: "services",

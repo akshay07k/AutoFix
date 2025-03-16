@@ -12,6 +12,7 @@ import Battery from "./services/Battery";
 import Consultation from "./services/Consultation";
 import AllServices from "./services/AllServices";
 import Cart from "./cart/Cart";
+import Booking from "./book/Booking";
 
 export {
     Home,
@@ -27,5 +28,6 @@ export {
     Wash,
     Battery,
     Consultation,
-    Cart
+    Cart,
+    Booking
 }
