@@ -11,6 +11,7 @@ import Wash from "./services/Wash";
 import Battery from "./services/Battery";
 import Consultation from "./services/Consultation";
 import AllServices from "./services/AllServices";
+import Cart from "./cart/Cart";
 
 export {
     Home,
@@ -25,5 +26,6 @@ export {
     Brake,
     Wash,
     Battery,
-    Consultation
+    Consultation,
+    Cart
 }

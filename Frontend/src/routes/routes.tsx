@@ -8,7 +8,8 @@ import {
     Brake,
     Wash,
     Battery,
-    Consultation
+    Consultation,
+    Cart
  } from "../components";
 import ErrorPage from "../pages/ErrorPage";
 import { Admin, Dashboard, Mechanics, Orders } from "../admin";
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
                         element: <Consultation />
                     }
                 ]
+            },
+            {
+                path: "cart",
+                element: <Cart />
             }
         ]
     },
