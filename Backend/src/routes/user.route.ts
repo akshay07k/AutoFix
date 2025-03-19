@@ -5,16 +5,18 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  login,
 } from '../controllers/user.controller';
 
 const router = express.Router();
 
-router.post('/', createUser);
+router.post('/register', createUser);
+router.post('/login', login);
 
 // For Admin
-router.get('/', getAllUsers);
+router.get('/getAllUsers', getAllUsers);
 router.get('/:id', getUserById);
-router.put('/:id', updateUser);
+router.put('/update', updateUser);
 router.delete('/:id', deleteUser);
 
 export default router;

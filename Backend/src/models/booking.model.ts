@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 import { IBookingDoc } from '../types';
 import { cartItemSchema } from './cart.model';
 
@@ -48,7 +48,7 @@ const scheduleSchema = new Schema(
 const bookingSchema = new Schema<IBookingDoc>(
   {
     userId: { 
-      type: String, 
+      type: Schema.Types.ObjectId, 
       required: true, 
       ref: 'User' 
     },

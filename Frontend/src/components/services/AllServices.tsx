@@ -108,11 +108,11 @@ const services = [
         image: "https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=1200",
         description: "Ensure your safety with our comprehensive brake inspection and replacement services. We use quality parts for optimal performance"
     },
-    {
-        name: "Tires",
-        image: "https://media.istockphoto.com/id/1312834665/photo/tire-changing-in-a-car-service.jpg?b=1&s=612x612&w=0&k=20&c=zxQK4BYG9eD7kUXQBW95OudMdvyCDORzYQOsMwkJpRM=",
-        description: "We offer a wide selection of tires for all makes and models. Our experts will help you find the right tires for your vehicle"
-    },
+    // {
+    //     name: "Tires",
+    //     image: "https://media.istockphoto.com/id/1312834665/photo/tire-changing-in-a-car-service.jpg?b=1&s=612x612&w=0&k=20&c=zxQK4BYG9eD7kUXQBW95OudMdvyCDORzYQOsMwkJpRM=",
+    //     description: "We offer a wide selection of tires for all makes and models. Our experts will help you find the right tires for your vehicle"
+    // },
     {
         name: "Car Wash",
         image: "https://media.istockphoto.com/id/1310978724/photo/the-washing-process-on-a-self-service-car-wash.jpg?b=1&s=612x612&w=0&k=20&c=4tzXceGd1Tb1l9yTbGpnA4G0gKY3gc7XV_l1b_gCzK8=",

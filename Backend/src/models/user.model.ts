@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IUserDoc } from '../types';
+import bcrypt from "bcrypt";
 
 export const carDetailsSchema = new Schema(
     {
@@ -54,5 +55,18 @@ const userSchema = new Schema<IUserDoc>(
         timestamps: true
     }
 );
+
+
+userSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) return next();
+    
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+});
+
+userSchema.methods.isPasswordCorrect = async function(this: IUserDoc, password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.password);
+};
+
 
 export default model<IUserDoc>('User', userSchema);

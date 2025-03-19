@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export interface IService {
   category: string;
@@ -29,6 +29,7 @@ export interface IUser {
   cars?: ICarDetails[];
   createdAt?: Date;
   updatedAt?: Date;
+  isPasswordCorrect(password: string): Promise<boolean>;
 }
 
 export interface ILocation {
@@ -49,11 +50,12 @@ export interface ISchedule {
 export interface IServiceDoc extends IService, Document {}
 export interface IUserDoc extends IUser, Document {}
 export interface ICartDoc extends Document {
+  _id: Types.ObjectId
   userId: string;
   items: ICartItem[];
 }
 export interface IBookingDoc extends Document {
-  userId: string;
+  userId: Types.ObjectId;
   cartItems: ICartItem[];
   location: ILocation;
   schedule: ISchedule;

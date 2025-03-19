@@ -12,10 +12,14 @@
     "dev": "nodemon -r tsconfig-paths/register src/index.ts"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.14.1",
     "mongoose": "^8.12.0",
     "tsconfig-paths": "^4.2.0"

@@ -12,11 +12,11 @@ const items = [
   },
   {
     title: "How it Works",
-    href: "/about-us",
+    href: "#about-us",
   },
   {
     title: "Reviews",
-    href: "/reviews",
+    href: "#reviews",
   },
   {
     title: "Become a Mechanic",

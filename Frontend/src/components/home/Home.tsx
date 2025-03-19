@@ -2,6 +2,7 @@ import React from 'react'
 import { ArrowRight, Settings } from "lucide-react"
 import { Button } from '../ui'
 import { MovingCar, CustomerReview } from '..'
+import { Link } from 'react-router-dom'
 
 const Home: React.FC = () => {
   return (
@@ -21,7 +22,7 @@ const Home: React.FC = () => {
           </div>
 
           {/* Content */}
-          <div className="relative container flex flex-col items-center justify-center min-h-screen text-center px-4">
+          <div className="relative container flex flex-col items-center justify-center min-h-screen text-center px-4" id='about-us'>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-white mb-6 [text-shadow:_0_4px_12px_rgb(0_0_0_/_20%)]">
               <span className="block mb-4 [text-shadow:_0_4px_12px_rgb(0_0_0_/_20%)]">
               Hassle-Free Car Maintenance</span>
@@ -110,8 +111,13 @@ const Home: React.FC = () => {
                       height={500}
                       className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                     />
+                    <div className="hidden group-hover:block absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+                      <h3 className='text-2xl text-white text-center tracking-wider font-bold mb-2'>{item.name}</h3>
+                      <Link to={`services/${item.name.toLowerCase().replace(' ', '-')}`}>
+                      <p className='text-center py-1 rounded-lg bg-white text-gray-700 font-bold text-lg cursor-pointer'>More Info</p>
+                      </Link>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-medium text-white mb-2">{item.name}</h3>
                 </div>
               ))}
             </div>
@@ -140,8 +146,8 @@ const service = [
     image: "https://images.pexels.com/photos/13065691/pexels-photo-13065691.jpeg?auto=compress&cs=tinysrgb&w=1200",
   },
   {
-    name: "Tires",
-    image: "https://media.istockphoto.com/id/1312834665/photo/tire-changing-in-a-car-service.jpg?b=1&s=612x612&w=0&k=20&c=zxQK4BYG9eD7kUXQBW95OudMdvyCDORzYQOsMwkJpRM=",
+    name: "Battery Replacement",
+    image: "https://images.pexels.com/photos/4374843/pexels-photo-4374843.jpeg?auto=compress&cs=tinysrgb&w=1200",
   },
   {
     name: "Car Wash",
