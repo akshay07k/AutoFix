@@ -1,6 +1,5 @@
-import mongoose, { Schema, model } from 'mongoose';
-import { IBookingDoc } from '../types';
-import { cartItemSchema } from './cart.model';
+import { Schema, model } from 'mongoose';
+import { cartItemSchema } from './cart.model.js';
 
 const locationSchema = new Schema(
   {
@@ -45,7 +44,7 @@ const scheduleSchema = new Schema(
 );
 
 
-const bookingSchema = new Schema<IBookingDoc>(
+const bookingSchema = new Schema(
   {
     userId: { 
       type: Schema.Types.ObjectId, 
@@ -71,6 +70,6 @@ const bookingSchema = new Schema<IBookingDoc>(
   }
 );
 
-const Booking = model<IBookingDoc>('Booking', bookingSchema);
+const Booking = model('Booking', bookingSchema);
 
 export default Booking;

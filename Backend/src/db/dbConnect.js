@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
-import { DB_NAME } from "@/constants";
+import { DB_NAME } from "../constants.js";
 
-type ConnectionObject = {
-  isConnected?: number;
-};
-
-const connection: ConnectionObject = {};
+const connection = {};
 
 async function dbConnect() {
     if(connection.isConnected) {
@@ -15,7 +11,7 @@ async function dbConnect() {
 
     try {
         
-        const db = await mongoose.connect(process.env.MONGODB_URI as string, {
+        const db = await mongoose.connect(process.env.MONGODB_URI, {
             dbName: DB_NAME
         });
 

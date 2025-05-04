@@ -1,33 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../ui';
 import { Check } from 'lucide-react';
-import { FormData, Service } from './Type.Services';
+import { Service } from './Type.Services';
 import CarDetailsForm from './CarDetailsForm';
+import { getServicesByCategory } from '../apis/Service.ts';
+import { addToCart } from '../apis/Cart.ts';
 
 const Brake: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
-  const [selectedService, setSelectedService] = useState<Service | null>(null)
+  const [selectedService, setSelectedService] = useState<string>("")
+  const [services, setServices] = useState<Service[]>([]);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+        setServices(await getServicesByCategory("Brake"));
+    };
+
+    if(services.length === 0) fetchServices();
+  },[])
+  // console.log(services);
   
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (selectedCar: string) => {
     return {
-      addToCart: (): void => {
-        console.log('Added to cart:', { service: selectedService, carDetails: {...data} });
-        closeForm();
+      addToCart: async () => {
+        try {
+          const response = await addToCart(selectedService, selectedCar);
+          if (response) {
+            console.log('Added to cart:', response);
+            closeForm();
+          }
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+        }
       },
       bookNow: (): void => {
-        console.log('Booked:', { service: selectedService, carDetails: {...data} });
+        console.log('Booked:', { service: selectedService, carDetails: selectedCar });
         closeForm();
       }
     };
   };
   
-  const handleBookNow = (service: Service) => {
-    setSelectedService(service)
+  const handleBookNow = (serviceId: string) => {
+    setSelectedService(serviceId)
     setIsFormOpen(true)
   }
   
   const closeForm = () => {
-    setSelectedService(null)
+    setSelectedService("")
     setIsFormOpen(false)
   }
 
@@ -84,7 +103,7 @@ const Brake: React.FC = () => {
                 ))}
               </ul>
               <Button 
-              onClick={() => handleBookNow(service)}
+              onClick={() => handleBookNow(service._id)}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-semibold">
                 Book This Package
               </Button>
@@ -154,25 +173,5 @@ const Brake: React.FC = () => {
   );
 };
 
-const services: Service[] = [
-  {
-    title: 'Brake Pads',
-    price: '999',
-    features: [
-      'New brake pads installed',
-      'Basic brake inspection',
-      'Test drive verification',
-    ],
-  },
-  {
-    title: 'Brake Discs',
-    price: '1499',
-    features: [
-      'New brake discs installed',
-      'Pad replacement included',
-      'Comprehensive brake check',
-    ],
-  },
-];
 
 export default Brake;

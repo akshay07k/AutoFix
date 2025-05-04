@@ -1,53 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '../ui';
 import { Trash2 } from 'lucide-react';
 import { CartItem } from '../services/Type.Services';
+import { getCartItems, removeFromCart } from '../apis/Cart';
 
 
 const Cart: React.FC = () => {
+  const [cartItems, setCartItems] = React.useState<CartItem[] | []>([]);
 
-  const cartItems: CartItem[] = [
-    {
-      service: {
-        title: 'Regular Oil Change',
-        price: '599',
-        features: [
-          'Conventional oil',
-          'Oil filter replacement',
-          'Basic vehicle inspection',
-          '4,000 Km/5 month warranty',
-        ],
-      },
-      carDetails: {
-        carMake: 'Toyota',
-        carModel: 'Corolla',
-        year: '2020',
-        licensePlate: 'ABC-123',
-      },
-    },
-    {
-      service: {
-        title: 'Synthetic Blend',
-        price: '1199',
-        features: [
-          'Synthetic blend oil',
-          'Premium oil filter',
-          'Comprehensive inspection',
-          '10,000 Km/12 month warranty',
-        ],
-      },
-      carDetails: {
-        carMake: 'Honda',
-        carModel: 'Civic',
-        year: '2019',
-        licensePlate: 'XYZ-789',
-      },
-    },
-  ];
+  const fetchItems = async () => {
+    try {
+      const response = await getCartItems();
+      setCartItems(response.data.items);
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    }
+  };
+
+  useEffect(() => {
+    if(cartItems.length === 0) {
+      fetchItems();
+    }
+  },[])
 
   const totalPrice = cartItems.reduce((sum, item) => {
     return sum + parseInt(item.service.price);
-  }, 0);
+  }, 0) || 0;
+
+  const remove = async (index: number) => {
+    try {
+      await removeFromCart(index);
+      setCartItems((prevItems) => prevItems.filter((_, i) => i !== index));
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
+    }
+  };
 
 
   return (
@@ -55,19 +42,19 @@ const Cart: React.FC = () => {
       <div className="mx-auto px-6 sm:px-10 lg:px-14">
         <div className="lg:flex lg:gap-8">
           {/* Left Section: Shopping Cart Items */}
-          <div className="lg:flex-1 mb-8 lg:mb-0">
+          <div className="lg:flex-1 mb-8 lg:mb-0 max-h-screen overflow-y-auto">
             <div className="mb-10">
-              <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+              <h1 className="text-2xl lg:text-4xl font-extrabold text-gray-900 tracking-tight">
                 Shopping Cart
               </h1>
-              <p className="text-md text-gray-600 mt-2">
+              <p className="text-sm lg:text-md text-gray-600 mt-2">
                 {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart
               </p>
             </div>
 
             {cartItems.length === 0 ? (
               <div className="bg-white rounded-3xl shadow-lg p-8 text-center">
-                <p className="text-gray-700 text-xl font-medium">Your cart is empty</p>
+                <p className="text-gray-700 text-lg lg:text-xl font-medium">Your cart is empty</p>
                 <p className="text-gray-500 mt-3">
                   Discover our services and add some to your cart!{' '}
                   <a href="/" className="text-blue-600 hover:text-blue-700 font-medium">
@@ -84,20 +71,20 @@ const Cart: React.FC = () => {
                   >
                     <div className="flex items-start gap-6">
                       <div className="flex-1">
-                        <h2 className="text-xl font-bold text-gray-800">
+                        <h2 className="text-lg lg:text-xl font-bold text-gray-800">
                           {item.service.title}
                         </h2>
                         <div className="mt-3 text-gray-600">
-                          <p className="text-lg font-medium">
+                          <p className="text-md lg:text-lg font-medium">
                             {item.carDetails.carMake} {item.carDetails.carModel}{' '}
                             <span className="text-gray-500">({item.carDetails.year})</span>
                           </p>
-                          <p className="text-sm mt-1">
+                          <p className="text-xs lg:text-sm mt-1">
                             License:{' '}
                             <span className="font-medium">{item.carDetails.licensePlate}</span>
                           </p>
                         </div>
-                        <ul className="mt-4 text-sm text-gray-600 space-y-2">
+                        <ul className="mt-4 text-xs lg:text-sm text-gray-600 space-y-2">
                           {item.service.features.map((feature, fIndex) => (
                             <li key={fIndex} className="flex items-center gap-2">
                               <span className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
@@ -107,11 +94,12 @@ const Cart: React.FC = () => {
                         </ul>
                       </div>
                       <div className="text-right">
-                        <p className="text-xl font-bold text-black">
+                        <p className="text-lg lg:text-xl font-bold text-black">
                           Rs. {parseInt(item.service.price).toLocaleString()}
                         </p>
                         <Button
-                          className="mt-4 text-red-500 hover:text-red-600 text-sm font-medium bg-transparent hover:bg-transparent cursor-pointer"
+                          onClick={() => remove(index)}
+                          className="mt-4 text-red-500 hover:text-red-600 text-xs lg:text-sm font-medium bg-transparent hover:bg-transparent cursor-pointer"
                         >
                           <Trash2 className="h-4 w-4" />
                           Remove
@@ -155,7 +143,7 @@ const Cart: React.FC = () => {
                 </Button>
                 <div className="mt-4 text-center">
                   <a href="/" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                    Continue Shopping
+                    Continue Browsing
                   </a>
                 </div>
               </div>

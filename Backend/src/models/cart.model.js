@@ -1,25 +1,26 @@
 import { Schema, model } from 'mongoose';
-import { ICartDoc } from '../types';
-import { carDetailsSchema } from './user.model';
-import { serviceSchema } from './service.model';
+import { carSchema } from './car.model.js';
+import { serviceSchema } from './service.model.js';
 
 export const cartItemSchema = new Schema(
     {
         service: {
-            type: serviceSchema,
+            type: Schema.Types.ObjectId,
+            ref: 'Service',
             required: true
         },
         carDetails: {
-            type: carDetailsSchema,
+            type: Schema.Types.ObjectId,
+            ref: 'Car',
             required: true
         }
     }
 );
 
-const cartSchema = new Schema<ICartDoc>(
+const cartSchema = new Schema(
     {
         userId: { 
-            type: String, 
+            type: Schema.Types.ObjectId, 
             required: true, 
             ref: 'User' 
         },
@@ -27,6 +28,6 @@ const cartSchema = new Schema<ICartDoc>(
     }
 );
 
-const Cart =  model<ICartDoc>('Cart', cartSchema);
+const Cart =  model('Cart', cartSchema);
 
 export default Cart;

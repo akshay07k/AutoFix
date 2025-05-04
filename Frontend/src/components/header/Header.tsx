@@ -23,11 +23,12 @@ const Header: React.FC = () => {
             <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-500" />
             <span className="sr-only">Notifications</span>
           </Button>
-
+          <Link to={'/cart'}>
           <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white duration-300 ease-in">
             <ShoppingBag className="h-5 w-5" />
             <span className="sr-only">Shopping cart</span>
           </Button>
+          </Link>
 
           <Avatar className="h-8 w-8">
             <AvatarImage src="./placeholder.svg" alt="User" className="z-10" />

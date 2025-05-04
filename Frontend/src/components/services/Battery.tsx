@@ -1,33 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../ui';
 import { Check } from 'lucide-react';
-import { FormData, Service } from './Type.Services';
+import { Service } from './Type.Services';
 import CarDetailsForm from './CarDetailsForm';
+import axios from 'axios';
+import { addToCart } from '../apis/Cart';
 
 const Battery: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
-  const [selectedService, setSelectedService] = useState<Service | null>(null)
+  const [selectedService, setSelectedService] = useState<string>("")
+  const [services, setServices] = useState<Service[]>([]);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(import.meta.env.VITE_API_URL + '/service/category/Battery');
+        const data = response.data.data;
+
+        setServices(data);
+
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    };
+    if(services.length === 0) fetchServices();
+  },[])
+  // console.log(services);
+  
+
+  const onSubmit = (selectedCar: string) => {
     return {
-      addToCart: (): void => {
-        console.log('Added to cart:', { service: selectedService, carDetails: {...data} });
-        closeForm();
+      addToCart: async () => {
+        try {
+          const response = await addToCart(selectedService, selectedCar);
+          if (response) {
+            console.log('Added to cart:', response);
+            closeForm();
+          }
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+        }
       },
       bookNow: (): void => {
-        console.log('Booked:', { service: selectedService, carDetails: {...data} });
+        console.log('Booked:', { service: selectedService, carDetails: selectedCar });
         closeForm();
       }
     };
   };
 
   const handleBookNow = () => {
-    setSelectedService(services[0])
+    setSelectedService(services[0]._id)
     setIsFormOpen(true)
   }
   
   const closeForm = () => {
-    setSelectedService(null)
+    setSelectedService("")
     setIsFormOpen(false)
   }
 
@@ -150,17 +177,5 @@ const Battery: React.FC = () => {
     </div>
   );
 };
-
-const services: Service[] = [
-  {
-    title: 'Battery Replacement',
-    price: '2499',
-    features: [
-      'New high-quality battery',
-      'Professional installation',
-      'Old battery disposal',
-    ],
-  },
-];
 
 export default Battery;

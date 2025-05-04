@@ -1,15 +1,15 @@
-import { Request, Response } from 'express';
-import Cart from '../models/cart.model';
-import { ICartDoc, ICartItem } from '../types';
-import { ApiError, ApiResponse, asyncHandler } from '../utils';
+import Cart from '../models/cart.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
-const getCart = asyncHandler(async (req: Request, res: Response) => {
+const getCart = asyncHandler(async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.params.userId });
+    const cart = await Cart.findById(req.params.cartId).populate('items.service').populate('items.carDetails');
 
     if (!cart) {
       return res.status(200).json(
-        new ApiResponse(200, { userId: req.params.userId, items: [] }, 'Cart is empty')
+        new ApiResponse(200, { cartId: req.params.cartId, items: [] }, 'Cart is empty')
       );
     }
 
@@ -21,39 +21,46 @@ const getCart = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const addToCart = asyncHandler(async (req: Request, res: Response) => {
+const addToCart = asyncHandler(async (req, res) => {
   try {
-    const { userId } = req.params;
-    const newItem: ICartItem = req.body;
+    const { cartId } = req.params;
+    const { service, carDetails } = req.body;
 
-    let cart = await Cart.findOne({ userId });
-    if (!cart) {
-      cart = new Cart({ userId, items: [newItem] });
-    } else {
-      cart.items.push(newItem);
+    if (!service || !carDetails) {
+      throw new ApiError(400, 'Service and carDetails are required');
     }
-    await cart.save();
+
+    let cart = await Cart.findById(cartId);
+    if (!cart) {
+      throw new ApiError(404, 'Cart not found');
+    }
+
+    const newItem = { service, carDetails };
+    cart.items.push(newItem);
+    
+    cart.save();
 
     return res.status(201).json(
-        new ApiResponse(201, cart, 'Item added to cart successfully')
+      new ApiResponse(201, cart, 'Item added to cart successfully')
     );
   } catch (error) {
-    throw new ApiError(400, 'Error adding to cart', [error]);
+    throw new ApiError(400, 'Error adding to cart', [error.message]);
   }
 });
 
-const updateCartItem = asyncHandler(async (req: Request, res: Response) => {
-  try {
-    const { userId, itemIndex } = req.params;
-    const updatedItem: ICartItem = req.body;
 
-    const cart = await Cart.findOne({ userId });
+const updateCartItem = asyncHandler(async (req, res) => {
+  try {
+    const { cartId, itemIndex } = req.params;
+    const updatedItem = req.body;
+
+    const cart = await Cart.findById(cartId);
     if (!cart || parseInt(itemIndex) >= cart.items.length) {
       throw new ApiError(404, 'Cart or item not found');
     }
 
     cart.items[parseInt(itemIndex)] = updatedItem;
-    await cart.save();
+    cart.save();
 
 
     return res.status(200).json(
@@ -65,16 +72,16 @@ const updateCartItem = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const removeFromCart = asyncHandler(async (req: Request, res: Response) => {
+const removeFromCart = asyncHandler(async (req, res) => {
   try {
-    const { userId, itemIndex } = req.params;
+    const { cartId, itemIndex } = req.params;
 
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findById(cartId);
     if (!cart || parseInt(itemIndex) >= cart.items.length) {
       throw new ApiError(404, 'Cart or item not found');
     }
     cart.items.splice(parseInt(itemIndex), 1);
-    await cart.save();
+    cart.save();
 
     return res.status(200).json(
         new ApiResponse(200, cart, 'Item removed from cart successfully')
@@ -85,10 +92,10 @@ const removeFromCart = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const clearCart = asyncHandler(async (req: Request, res: Response) => {
+const clearCart = asyncHandler(async (req, res) => {
   try {
-    const { userId } = req.params;
-    const cart = await Cart.findOneAndUpdate({ userId }, { items: [] }, { new: true });
+    const { cartId } = req.params;
+    const cart = await Cart.findByIdAndUpdate(cartId, { items: [] }, { new: true });
     if (!cart) {
       throw new ApiError(404, 'Cart not found');
     }

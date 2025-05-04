@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { IServiceDoc } from '../types';
 
-export const serviceSchema = new Schema<IServiceDoc>(
+export const serviceSchema = new Schema(
     {
         category: { 
             type: String, 
@@ -27,6 +26,6 @@ export const serviceSchema = new Schema<IServiceDoc>(
     }
 );
 
-const Service = model<IServiceDoc>('Service', serviceSchema);
+const Service = model('Service', serviceSchema);
 
 export default Service;

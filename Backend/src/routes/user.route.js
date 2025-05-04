@@ -5,13 +5,17 @@ import {
   createUser,
   updateUser,
   deleteUser,
-  login,
-} from '../controllers/user.controller';
+  loginUser,
+  addCar,
+  getAllCars,
+} from '../controllers/user.controller.js';
 
 const router = express.Router();
 
 router.post('/register', createUser);
-router.post('/login', login);
+router.post('/login', loginUser);
+router.post('/addCar/:userId', addCar);
+router.get('/getAllCars/:userId', getAllCars);
 
 // For Admin
 router.get('/getAllUsers', getAllUsers);

@@ -1,33 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../ui';
 import { Check } from 'lucide-react';
-import { FormData, Service } from './Type.Services';
+import { Service } from './Type.Services';
 import CarDetailsForm from './CarDetailsForm';
+import { getServicesByCategory } from '../apis/Service';
+import { addToCart } from '../apis/Cart';
 
 const Wash: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedService, setSelectedService] = useState<string>("");
+  const [services, setServices] = useState<Service[]>([]);
 
-  const handleBookNow = (service: Service): void => {
-    setSelectedService(service);
+  useEffect(() => {
+    const fetchServices = async () => {
+        setServices(await getServicesByCategory("Wash"));
+    };
+
+    if(services.length === 0) fetchServices();
+  },[])
+
+  const handleBookNow = (serviceId: string): void => {
+    setSelectedService(serviceId);
     setIsFormOpen(true);
   };
+  console.log(selectedService);
+  
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (selectedCar: string) => {
     return {
-      addToCart: (): void => {
-        console.log('Added to cart:', { service: selectedService, carDetails: {...data} });
-        closeForm();
+      addToCart: async () => {
+        try {
+          const response = await addToCart(selectedService, selectedCar);
+          if (response) {
+            console.log('Added to cart:', response);
+            closeForm();
+          }
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+        }
       },
       bookNow: (): void => {
-        console.log('Booked:', { service: selectedService, carDetails: {...data} });
+        console.log('Booked:', { service: selectedService, carDetails: selectedCar });
         closeForm();
       }
     };
   };
 
   const closeForm = (): void => {
-    setSelectedService(null);
+    setSelectedService("");
     setIsFormOpen(false);
   };
 
@@ -89,7 +109,7 @@ const Wash: React.FC = () => {
                 ))}
               </ul>
               <Button 
-              onClick={() => handleBookNow(service)}
+              onClick={() => handleBookNow(service._id)}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-semibold">
                 Book This Package
               </Button>
@@ -158,36 +178,5 @@ const Wash: React.FC = () => {
     </div>
   );
 };
-
-const services: Service[] = [
-  {
-    title: 'Interior Wash',
-    price: '499',
-    features: [
-      'Vacuuming of seats and carpets',
-      'Dashboard and console wipe-down',
-      'Interior window cleaning',
-    ],
-  },
-  {
-    title: 'Exterior Wash',
-    price: '299',
-    features: [
-      'Soap wash and rinse',
-      'Wheel cleaning',
-      'Quick dry',
-    ],
-  },
-  {
-    title: 'Interior & Exterior Wash',
-    price: '699',
-    recommended: true,
-    features: [
-      'Full interior vacuum and wipe-down',
-      'Complete exterior wash',
-      'Window cleaning inside and out',
-    ],
-  },
-];
 
 export default Wash;

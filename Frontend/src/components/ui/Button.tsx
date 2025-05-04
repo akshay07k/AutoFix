@@ -18,7 +18,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onClick 
         ? throttle((event) => {
             if (onClick) onClick(event);
-          }, 500)
+          }, 1000)
         : 
         () => {},
       [onClick]

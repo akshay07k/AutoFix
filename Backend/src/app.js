@@ -1,8 +1,8 @@
-import express, { Express, Request, Response } from "express";
+import express from "express";
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import session from 'express-session';
-const app: Express = express();
+const app = express();
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
@@ -28,10 +28,10 @@ app.use(cookieParser())
 
 
 // Routes 
-import userRouter from "./routes/user.route"
-import cartRouter from "./routes/cart.route"
-import bookingRouter from "./routes/booking.route"
-import serviceRouter from "./routes/service.route"
+import userRouter from "./routes/user.route.js"
+import cartRouter from "./routes/cart.route.js"
+import bookingRouter from "./routes/booking.route.js"
+import serviceRouter from "./routes/service.route.js"
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/cart", cartRouter)
@@ -39,7 +39,7 @@ app.use("/api/v1/booking", bookingRouter)
 app.use("/api/v1/service", serviceRouter)
 
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
   res.send("Express + TypeScript Server");
 });
 

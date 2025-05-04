@@ -1,33 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../ui';
 import { Check } from 'lucide-react';
-import { FormData, Service } from './Type.Services';
+import { Service } from './Type.Services';
 import CarDetailsForm from './CarDetailsForm';
+import { getServicesByCategory } from '../apis/Service';
+import { addToCart } from '../apis/Cart';
 
 const Consultation: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
-  const [selectedService, setSelectedService] = useState<Service | null>(null)
+  const [selectedService, setSelectedService] = useState<string>("")
+  const [services, setServices] = useState<Service[]>([]);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+        setServices(await getServicesByCategory("Consultation"));
+    };
+
+    if(services.length === 0) fetchServices();
+  },[])
+  // console.log(services);
     
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (selectedCar: string) => {
     return {
-      addToCart: (): void => {
-        console.log('Added to cart:', { service: selectedService, carDetails: {...data} });
-        closeForm();
+      addToCart: async () => {
+        try {
+          const response = await addToCart(selectedService, selectedCar);
+          if (response) {
+            console.log('Added to cart:', response);
+            closeForm();
+          }
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+        }
       },
       bookNow: (): void => {
-        console.log('Booked:', { service: selectedService, carDetails: {...data} });
+        console.log('Booked:', { service: selectedService, carDetails: selectedCar });
         closeForm();
       }
     };
   };
     
   const handleBookNow = () => {
-    setSelectedService(services[0])
+    setSelectedService(services[0]._id)
     setIsFormOpen(true)
   }
     
   const closeForm = () => {
-    setSelectedService(null)
+    setSelectedService("")
     setIsFormOpen(false)
   }
   return (
@@ -150,16 +169,5 @@ const Consultation: React.FC = () => {
   );
 };
 
-const services: Service[] = [
-  {
-    title: 'Consultation',
-    price: '999',
-    features: [
-      'Full vehicle inspection',
-      'Expert mechanic advice',
-      'Condition report',
-    ],
-  },
-];
 
 export default Consultation;

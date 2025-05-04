@@ -1,4 +1,5 @@
 export interface FormData {
+  _id: string;
   carMake: string;
   carModel: string;
   year: string;
@@ -6,10 +7,12 @@ export interface FormData {
 }
 
 export interface Service {
+  _id: string;
+  category: string;
   title: string;
   price: string;
   features: string[];
-  recommended?: boolean;
+  recommended: boolean;
 }
 
 

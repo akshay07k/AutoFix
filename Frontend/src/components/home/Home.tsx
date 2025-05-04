@@ -32,6 +32,7 @@ const Home: React.FC = () => {
             <p className="max-w-[600px] text-gray-300 text-lg md:text-xl mb-12">
             Get professional auto repair and maintenance at your doorstep—fast, reliable, and affordable.
             </p>
+            <Link to={'/services'}>
             <Button
               text-size="lg"
               className="text-white px-8 py-6 text-lg rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:scale-105"
@@ -39,6 +40,7 @@ const Home: React.FC = () => {
               Book a Service
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
+            </Link>
           </div>
         </section>
 

@@ -1,11 +1,10 @@
-import { Request, Response } from 'express';
-import Booking from '../models/booking.model';
-import Cart from '../models/cart.model';
-import { ApiError } from '../utils/ApiError';
-import { ApiResponse } from '../utils/ApiResponse';
-import { asyncHandler } from '../utils/asyncHandler';
+import Booking from '../models/booking.model.js';
+import Cart from '../models/cart.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
-const createBooking = asyncHandler(async (req: Request, res: Response) => {
+const createBooking = asyncHandler(async (req, res) => {
   try {
     const { userId, cartItems, location, schedule } = req.body;
 
@@ -13,7 +12,7 @@ const createBooking = asyncHandler(async (req: Request, res: Response) => {
       throw new ApiError(400, 'Cart items are required to create a booking');
     }
 
-    const totalAmount = cartItems.reduce((total: number, item: any) => total + parseInt(item.service.price), 0);
+    const totalAmount = cartItems.reduce((total, item) => total + parseInt(item.service.price), 0);
     const newBooking = new Booking({
       userId,
       cartItems,
@@ -34,7 +33,7 @@ const createBooking = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const getAllBookings = asyncHandler(async (req: Request, res: Response) => {
+const getAllBookings = asyncHandler(async (req, res) => {
   try {
     const bookings = await Booking.find();
     return res.status(200).json(
@@ -45,7 +44,7 @@ const getAllBookings = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const getBookingById = asyncHandler(async (req: Request, res: Response) => {
+const getBookingById = asyncHandler(async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
     if (!booking) {
@@ -60,7 +59,7 @@ const getBookingById = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const getBookingsByUser = asyncHandler(async (req: Request, res: Response) => {
+const getBookingsByUser = asyncHandler(async (req, res) => {
   try {
     const bookings = await Booking.find({ userId: req.params.userId });
     return res.status(200).json(
@@ -71,7 +70,7 @@ const getBookingsByUser = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const cancelBooking = asyncHandler(async (req: Request, res: Response) => {
+const cancelBooking = asyncHandler(async (req, res) => {
   try {
     const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
     if (!deletedBooking) {

@@ -1,29 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { IUserDoc } from '../types';
 import bcrypt from "bcrypt";
 
-export const carDetailsSchema = new Schema(
-    {
-        carMake: { 
-            type: String, 
-            required: true 
-        },
-        carModel: { 
-            type: String, 
-            required: true 
-        },
-        year: { 
-            type: String, 
-            required: true 
-        },
-        licensePlate: { 
-            type: String, 
-            required: true 
-        },
-    }
-);
-
-const userSchema = new Schema<IUserDoc>(
+const userSchema = new Schema(
     {
         email: { 
             type: String, 
@@ -44,12 +22,15 @@ const userSchema = new Schema<IUserDoc>(
         },
         cartId: { 
             type: Schema.Types.ObjectId, 
-            ref: 'Cart' 
+            ref: 'Cart',
+            default: null
         },
-        cars: { 
-            type: [carDetailsSchema], 
-            default: [] 
-        }
+        cars: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Car',
+            },
+        ]
     },
     {
         timestamps: true
@@ -64,9 +45,9 @@ userSchema.pre('save', async function(next) {
     next();
 });
 
-userSchema.methods.isPasswordCorrect = async function(this: IUserDoc, password: string): Promise<boolean> {
+userSchema.methods.isPasswordCorrect = async function(password) {
     return await bcrypt.compare(password, this.password);
 };
 
 
-export default model<IUserDoc>('User', userSchema);
+export default model('User', userSchema);

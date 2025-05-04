@@ -4,16 +4,12 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "start": "node dist/index.js",
-    "dev": "nodemon -r tsconfig-paths/register src/index.ts"
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
   },
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "@types/jsonwebtoken": "^9.0.9",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -21,19 +17,9 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.14.1",
-    "mongoose": "^8.12.0",
-    "tsconfig-paths": "^4.2.0"
+    "mongoose": "^8.12.0"
   },
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.8",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/mongoose": "^5.11.96",
-    "@types/node": "^22.13.9",
-    "concurrently": "^9.1.2",
-    "nodemon": "^3.1.9",
-    "ts-node": "^10.9.2",
-    "tsc-alias": "^1.8.11",
-    "typescript": "^5.8.2"
+    "nodemon": "^3.1.9"
   }
 }
