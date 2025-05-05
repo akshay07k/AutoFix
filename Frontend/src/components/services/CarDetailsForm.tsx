@@ -8,7 +8,6 @@ import axios from 'axios';
 interface CarDetailsFormProps {
   onSubmit: (selectedCar: string) => {
     addToCart: () => void;
-    bookNow: () => void;
   };
   onClose: () => void;
 }
@@ -109,17 +108,14 @@ const CarDetailsForm: React.FC<CarDetailsFormProps> = ({ onSubmit, onClose }) =>
             <div className="flex gap-4">
               <Button
                 type="button"
-                onClick={() => onSubmit(selectedCar).addToCart()}
-                className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold"
+                onClick={() => {
+                  if(selectedCar !== "") {  
+                    onSubmit(selectedCar).addToCart()
+                  }
+                }}
+                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold cursor-pointer"
               >
                 Add to Cart
-              </Button>
-              <Button
-                type="button"
-                onClick={() => onSubmit(selectedCar).bookNow()}
-                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold"
-              >
-                Book Now
               </Button>
             </div>
           </div>

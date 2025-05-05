@@ -6,22 +6,41 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 
 const createBooking = asyncHandler(async (req, res) => {
   try {
-    const { userId, cartItems, location, schedule } = req.body;
+    const { userId, items, location, scheduleTime, totalAmount } = req.body;
 
-    if (!cartItems || cartItems.length === 0) {
+    if (!items || items.length === 0) {
       throw new ApiError(400, 'Cart items are required to create a booking');
     }
 
-    const totalAmount = cartItems.reduce((total, item) => total + parseInt(item.service.price), 0);
+    const sanitizedItems = items.map(item => ({
+      service: {
+        title: item.service.title,
+        price: parseInt(item.service.price),
+        features: item.service.features
+      },
+      carDetails: {
+        carMake: item.carDetails.carMake,
+        carModel: item.carDetails.carModel,
+        year: parseInt(item.carDetails.year),
+        licensePlate: item.carDetails.licensePlate,
+      },
+    }));
+
+    // console.log('Sanitized Items:', sanitizedItems);
+    
+    
     const newBooking = new Booking({
       userId,
-      cartItems,
+      items: sanitizedItems,
       location,
-      schedule,
-      totalAmount,
+      scheduleTime,
+      totalAmount: totalAmount,
     });
 
-    await newBooking.save();
+    // console.log('New Booking:', newBooking);
+    
+
+    newBooking.save();
     await Cart.findOneAndUpdate({ userId }, { items: [] });
 
     return res.status(201).json(
@@ -86,10 +105,30 @@ const cancelBooking = asyncHandler(async (req, res) => {
 });
 
 
+const updateBookingStatus = asyncHandler(async (req, res) => {
+  try {
+    const { status } = req.body;
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    if (!booking) {
+      throw new ApiError(404, 'Booking not found');
+    }
+    return res.status(200).json(
+        new ApiResponse(200, booking, 'Booking status updated successfully')
+    );
+  } catch (error) {
+    throw new ApiError(500, 'Error updating booking status', [error]);
+  }
+});
+
 export {
     createBooking,
     getAllBookings,
     getBookingById,
     getBookingsByUser,
     cancelBooking,
+    updateBookingStatus
 }

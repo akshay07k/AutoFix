@@ -9,7 +9,7 @@ import { addToCart } from '../apis/Cart';
 const Wash: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [selectedService, setSelectedService] = useState<string>("");
-  const [services, setServices] = useState<Service[]>([]);
+  const [services, setServices] = useState<Service[] | []>([]);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -38,10 +38,6 @@ const Wash: React.FC = () => {
         } catch (error) {
           console.error('Error adding to cart:', error);
         }
-      },
-      bookNow: (): void => {
-        console.log('Booked:', { service: selectedService, carDetails: selectedCar });
-        closeForm();
       }
     };
   };
@@ -83,7 +79,7 @@ const Wash: React.FC = () => {
           Choose Your Wash Package
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
-          {services.map((service, index) => (
+          {services.length > 0 && services.map((service, index) => (
             <div
               key={index}
               className={`bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative ${service.recommended ? "border-2 border-blue-500" : "border border-gray-100"}`}

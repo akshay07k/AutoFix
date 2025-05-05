@@ -32,10 +32,6 @@ const Brake: React.FC = () => {
         } catch (error) {
           console.error('Error adding to cart:', error);
         }
-      },
-      bookNow: (): void => {
-        console.log('Booked:', { service: selectedService, carDetails: selectedCar });
-        closeForm();
       }
     };
   };

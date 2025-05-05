@@ -14,6 +14,7 @@ import {
  } from "../components";
 import ErrorPage from "../pages/ErrorPage";
 import { Admin, Dashboard, Mechanics, Orders } from "../admin";
+import MyOrders from "../components/book/MyOrders";
 
 export const router = createBrowserRouter([
     {
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
             {
                 path: "cart",
                 element: <Cart />
+            },
+            {
+                path: "my-orders",
+                element: <MyOrders />
             }
         ]
     },

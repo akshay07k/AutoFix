@@ -1,47 +1,52 @@
 import { Schema, model } from 'mongoose';
-import { cartItemSchema } from './cart.model.js';
 
-const locationSchema = new Schema(
-  {
-      name: { 
-        type: String, 
-        required: true 
-      },
-      address: { 
-        type: String, 
-        required: true 
-      },
-      city: { 
-        type: String, 
-        required: true 
-      },
-      state: { 
-        type: String, 
-        required: true 
-      },
-      pin: { 
-        type: String, 
-        required: true 
-      },
-      country: { 
-        type: String, 
-        required: true 
-      },
-  }
-);
+const itemSchema = new Schema({
+  service: {
+    title: { type: String, required: true },
+    price: { type: Number, required: true },
+    features: { type: [String], required: true },
+  },
+  carDetails: {
+    carMake: { type: String, required: true },
+    carModel: { type: String, required: true },
+    year: { type: Number, required: true },
+    licensePlate: { type: String, required: true },
+  },
+});
 
-const scheduleSchema = new Schema(
-  {
-    date: { 
+const locationSchema = {
+    address: { 
       type: String, 
       required: true 
     },
-    time: { 
+    city: { 
       type: String, 
       required: true 
     },
-  }
-);
+    state: { 
+      type: String, 
+      required: true 
+    },
+    pin: { 
+      type: String, 
+      required: true 
+    },
+    country: { 
+      type: String, 
+      required: true 
+    },
+};
+
+const scheduleSchema = {
+  date: { 
+    type: String, 
+    required: true 
+  },
+  time: { 
+    type: String, 
+    required: true 
+  },
+};
 
 
 const bookingSchema = new Schema(
@@ -51,19 +56,24 @@ const bookingSchema = new Schema(
       required: true, 
       ref: 'User' 
     },
-    cartItems: [cartItemSchema],
+    items: [itemSchema],
     location: { 
       type: locationSchema, 
       required: true 
     },
-    schedule: { 
+    scheduleTime: { 
       type: scheduleSchema, 
       required: true 
     },
     totalAmount: { 
       type: Number, 
       required: true 
-    }
+    },
+    status: {
+      type: String,
+      enum: ['Pending', 'Confirmed', 'Cancelled', 'Completed'],
+      default: 'Pending',
+    },
   },
   {
     timestamps: true

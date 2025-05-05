@@ -5,15 +5,16 @@ import {
   getBookingById,
   getBookingsByUser,
   cancelBooking,
+  updateBookingStatus,
 } from '../controllers/booking.controller.js';
 
 const router = express.Router();
 
-
-router.post('/', createBooking);
-router.get('/', getAllBookings);
-router.get('/:id', getBookingById);
-router.get('/user/:userId', getBookingsByUser);
-router.delete('/:id', cancelBooking);
+router.post('/updateBookingStatus/:id', updateBookingStatus);
+router.post('/createBooking', createBooking);
+router.get('/getAllBookings', getAllBookings);
+router.get('/getBookingById/:id', getBookingById);
+router.get('/getBookingsByUser/:userId', getBookingsByUser);
+router.delete('/cancelBooking/:id', cancelBooking);
 
 export default router;

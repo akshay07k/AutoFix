@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { MapPin, Calendar, ChevronRight, Car, PenTool as Tools, Check } from 'lucide-react';
 import { BookingData, Location, CartItem } from '../services/Type.Services'
+import { getCartItems } from '../apis/Cart';
+import { useNavigate } from 'react-router-dom';
 
 
 const timeSlots = [
@@ -9,37 +11,11 @@ const timeSlots = [
   '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM',
 ];
 
-function App() {
+function Booking() {
   const [step, setStep] = useState<number>(2); 
   
-  const [cartItems] = useState<CartItem[]>([
-    {
-      service: {
-        title: 'Regular Oil Change',
-        price: '599',
-        features: ['Conventional oil', 'Oil filter replacement', 'Basic vehicle inspection', '4,000 Km/5 month warranty'],
-      },
-      carDetails: {
-        carMake: 'Toyota',
-        carModel: 'Corolla',
-        year: '2020',
-        licensePlate: 'ABC-123',
-      },
-    },
-    {
-      service: {
-        title: 'Brake Service',
-        price: '1299',
-        features: ['Brake pad replacement', 'Rotor inspection', 'Brake fluid check', '10,000 Km warranty'],
-      },
-      carDetails: {
-        carMake: 'Honda',
-        carModel: 'Civic',
-        year: '2021',
-        licensePlate: 'XYZ-789',
-      },
-    },
-  ]);
+  const [cartItems, setCartItems] = React.useState<CartItem[] | []>([]);
+  const navigate = useNavigate();
 
   const [bookingDetails, setBookingDetails] = useState<BookingData>({
     location: undefined,
@@ -61,6 +37,26 @@ function App() {
     },
 
   });
+
+
+  const fetchItems = async () => {
+    try {
+      const response = await getCartItems();
+      setCartItems(response.data.items);
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    }
+  };
+  
+  useEffect(() => {
+    if(cartItems.length === 0) {
+      fetchItems();
+    }
+  },[])
+
+  const calculateTotal = (): number => {
+    return cartItems.reduce((total, item) => total + parseInt(item.service.price), 0);
+  };
 
   const onSubmit: SubmitHandler<Location> = (data) => {
     setBookingDetails((prev) => ({ ...prev, location: {...data} }));
@@ -84,18 +80,22 @@ function App() {
     }
   };
 
-  const calculateTotal = (): number => {
-    return cartItems.reduce((total, item) => total + parseInt(item.service.price), 0);
-  };
-
   const handleConfirm = () => {
-    alert('Booking confirmed! We will send you a confirmation email shortly.');
-    console.log("bookingDetails", bookingDetails);
-    console.log("cartItems", cartItems);
+    // alert('Booking confirmed! We will send you a confirmation email shortly.');
+
+    const bookingData = {
+      userId: "681745b1acb7016e929527da",
+      items: cartItems,
+      location: bookingDetails.location,
+      scheduleTime: bookingDetails.schedule,
+      totalAmount: calculateTotal(),
+    }
+    console.log(bookingData);
+    navigator.clipboard.writeText(JSON.stringify(bookingData))
     
-    setStep(2);
     setBookingDetails({ location: undefined, schedule: { date: '', time: '' } });
     reset();
+    navigate("/cart");
   };
 
   return (
@@ -314,4 +314,4 @@ function App() {
   );
 }
 
-export default App;
+export default Booking;

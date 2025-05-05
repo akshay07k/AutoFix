@@ -3,10 +3,12 @@ import { Button } from '../ui';
 import { Trash2 } from 'lucide-react';
 import { CartItem } from '../services/Type.Services';
 import { getCartItems, removeFromCart } from '../apis/Cart';
+import { useNavigate } from 'react-router-dom';
 
 
 const Cart: React.FC = () => {
   const [cartItems, setCartItems] = React.useState<CartItem[] | []>([]);
+  const navigate = useNavigate();
 
   const fetchItems = async () => {
     try {
@@ -125,7 +127,7 @@ const Cart: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Tax</span>
+                    <span className="text-gray-600">Discount</span>
                     <span className="text-gray-900 font-medium">Rs. 0</span>
                   </div>
                   <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
@@ -136,7 +138,7 @@ const Cart: React.FC = () => {
                   </div>
                 </div>
                 <Button
-                  
+                  onClick={() => navigate('/book')}
                   className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold cursor-pointer"
                 >
                   Proceed to Checkout

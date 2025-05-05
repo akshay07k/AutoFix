@@ -1,6 +1,4 @@
 import { Schema, model } from 'mongoose';
-import { carSchema } from './car.model.js';
-import { serviceSchema } from './service.model.js';
 
 export const cartItemSchema = new Schema(
     {

@@ -35,7 +35,7 @@ import serviceRouter from "./routes/service.route.js"
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/cart", cartRouter)
-app.use("/api/v1/booking", bookingRouter)
+app.use("/api/v1/book", bookingRouter)
 app.use("/api/v1/service", serviceRouter)
 
 
