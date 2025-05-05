@@ -14,7 +14,8 @@ import {
  } from "../components";
 import ErrorPage from "../pages/ErrorPage";
 import { Admin, Dashboard, Mechanics, Orders } from "../admin";
-import MyOrders from "../components/book/MyOrders";
+import OrderHistory from "../components/book/OrderHistory";
+import ThankYou from "../components/book/Thankyou";
 
 export const router = createBrowserRouter([
     {
@@ -66,7 +67,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "my-orders",
-                element: <MyOrders />
+                element: <OrderHistory />
+            },
+            {
+                path: "order-confirmed/:orderId",
+                element: <ThankYou />
             }
         ]
     },

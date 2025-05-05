@@ -41,6 +41,7 @@ const createBooking = asyncHandler(async (req, res) => {
     
 
     newBooking.save();
+    
     await Cart.findOneAndUpdate({ userId }, { items: [] });
 
     return res.status(201).json(

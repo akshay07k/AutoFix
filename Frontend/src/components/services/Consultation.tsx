@@ -18,7 +18,7 @@ const Consultation: React.FC = () => {
 
     if(services.length === 0) fetchServices();
   },[])
-  // console.log(services);
+  console.log(services);
     
   const onSubmit = (selectedCar: string) => {
     return {
