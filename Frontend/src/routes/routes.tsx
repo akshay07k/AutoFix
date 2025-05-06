@@ -1,80 +1,41 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
-import {
-  Home,
-  OilChange,
-  AllServices,
-  Services,
-  Brake,
-  Wash,
-  Battery,
-  Consultation,
-  Cart,
-  Booking
-} from "../components";
+import { 
+    Home, 
+    OilChange, 
+    AllServices,
+    Services,
+    Brake,
+    Wash,
+    Battery,
+    Consultation,
+    Cart,
+    Booking
+ } from "../components";
 import ErrorPage from "../pages/ErrorPage";
 import { Admin, Dashboard, Mechanics, Orders } from "../admin";
-<<<<<<< HEAD
-import MyOrders from "../components/book/MyOrders";
-import Login from "../components/auth/Login";
-import Signup from "../components/auth/Signup";
-import ProtectedRoute from "./ProtectedRoute"; // <-- Import your protected route
-=======
 import OrderHistory from "../components/book/OrderHistory";
 import ThankYou from "../components/book/Thankyou";
->>>>>>> 4412608a55b91b27baefeee1686c7e1b8a612519
+import Login from "../components/auth/Login";
+import Signup from "../components/auth/Signup";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "",
-        element: <Home />
-      },
-      {
-        path: "book",
-        element: <Booking />
-      },
-      {
-        path: "services",
-        element: (
-          <ProtectedRoute>
-            <Services />
-          </ProtectedRoute>
-        ),
+    {
+        path: "/",
+        element: <App />,
+        errorElement: <ErrorPage />,
         children: [
-<<<<<<< HEAD
-          {
-            path: "",
-            element: <AllServices />
-          },
-          {
-            path: "oil-change",
-            element: <OilChange />
-          },
-          {
-            path: "battery-replacement",
-            element: <Battery />
-          },
-          {
-            path: "brakes-replacement",
-            element: <Brake />
-          },
-          {
-            path: "car-wash",
-            element: <Wash />
-          },
-          {
-            path: "consultation",
-            element: <Consultation />
-          }
-=======
             {
                 path: "",
                 element: <Home />
+            },
+            {
+                path: "login",
+                element: <Login />
+            },
+            {
+                path: "register",
+                element: <Signup />
             },
             {
                 path: "book",
@@ -122,60 +83,34 @@ export const router = createBrowserRouter([
                 path: "order-confirmed/:orderId",
                 element: <ThankYou />
             }
->>>>>>> 4412608a55b91b27baefeee1686c7e1b8a612519
         ]
-      },
-      {
-        path: "cart",
-        element: (
-          <ProtectedRoute>
-            <Cart />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "my-orders",
-        element: (
-          <ProtectedRoute>
-            <MyOrders />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "login",
-        element: <Login />
-      },
-      {
-        path: "signup",
-        element: <Signup />
-      }
-    ]
-  },
-  {
-    path: "/admin",
-    element: <Admin />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "",
-        element: <Navigate to={"dashboard"} replace />
-      },
-      {
-        path: "dashboard",
-        element: <Dashboard />
-      },
-      {
-        path: "mechanics",
-        element: <Mechanics />
-      },
-      {
-        path: "orders",
-        element: <Orders />
-      }
-    ]
-  },
-  {
-    path: "*",
-    element: <ErrorPage />
-  }
-]);
+    },
+    {
+        path: "/admin",
+        element: <Admin />,
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: "",
+                element: <Navigate to={"dashboard"} replace/>
+            },
+            {
+                path: "dashboard",
+                element: <Dashboard />
+            },
+            {
+                path: "mechanics",
+                element: <Mechanics />
+            },
+            {
+                path: "orders",
+                element: <Orders />
+            }
+        ]
+    },
+    {
+        path: "*",
+        element: <ErrorPage />
+    }
+
+])

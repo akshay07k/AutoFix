@@ -82,10 +82,14 @@ function Booking() {
   };
 
   const handleConfirm = async () => {
-    // alert('Booking confirmed! We will send you a confirmation email shortly.');
+    const userId = JSON.parse(localStorage.getItem("user") || "{}")._id;
+    if (!userId) {
+      console.error("User ID not found in local storage");
+      return;
+    }
 
     const bookingData = {
-      userId: "681745b1acb7016e929527da",
+      userId,
       items: cartItems,
       location: bookingDetails.location,
       scheduleTime: bookingDetails.schedule,

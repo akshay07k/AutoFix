@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,22 +18,19 @@ const Login = () => {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3000/api/v1/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-        credentials: "include", // include cookies for session
-      });
+      const res = await axios.post(
+        import.meta.env.VITE_API_URL + "/user/login", 
+        form
+      );
 
-      const data = await res.json();
+      const data = res.data;
 
-      if (!res.ok || !data.data) {
+      if (!data.data) {
         setError(data.message || "Login failed.");
       } else {
-        // Save user in both session and localStorage
-        sessionStorage.setItem("user", JSON.stringify(data.data));
         localStorage.setItem("user", JSON.stringify(data.data));
         navigate("/");
+        window.location.reload();
       }
     } catch (err) {
       setError("Something went wrong. Try again.");

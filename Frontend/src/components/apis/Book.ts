@@ -3,7 +3,11 @@ import axios from "axios";
 
 export const createBooking = async (bookingData: any) => {
     try {
-        bookingData.name = "Akshay";
+        let username = JSON.parse(localStorage.getItem("user") || "{}").name;
+        if(!username) {
+            username = "Guest";
+        }
+        bookingData.name = username;
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/book/createBooking`, bookingData);
         return response.data;
     }
@@ -15,7 +19,12 @@ export const createBooking = async (bookingData: any) => {
 
 export const getBookingsByUser = async () => {
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/book/getBookingsByUser/681745b1acb7016e929527da`);
+    const userId = JSON.parse(localStorage.getItem("user") || "{}")._id;
+    if (!userId) {
+      throw new Error("User ID not found in local storage");
+    }
+
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/book/getBookingsByUser/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching bookings:", error);

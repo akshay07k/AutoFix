@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Button } from '../ui';
 import { X } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { FormData } from './Type.Services';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface CarDetailsFormProps {
   onSubmit: (selectedCar: string) => {
@@ -13,15 +14,30 @@ interface CarDetailsFormProps {
 }
 
 const CarDetailsForm: React.FC<CarDetailsFormProps> = ({ onSubmit, onClose }) => {
-
+  const [userId, setUserId] = useState<string | null>(null);
   const [x, setX] = useState<number>(0);
   const [myCars, setMyCars] = useState<FormData[] | []>([]);
   const [selectedCar, setSelectedCar] = useState<string>("");
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const uid = JSON.parse(localStorage.getItem("user") || "{}")._id;
+    if(!uid) {
+      navigate('/login');
+    }
+    setUserId(uid);
+  }
+  , []);
+
+  
+
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_API_URL + '/user/getAllCars' + '/681745b1acb7016e929527da');
+        const response = await axios.get(
+          import.meta.env.VITE_API_URL + '/user/getAllCars/' + userId
+        );
 
         setMyCars(response.data.data);
       } catch (error) {
@@ -29,9 +45,9 @@ const CarDetailsForm: React.FC<CarDetailsFormProps> = ({ onSubmit, onClose }) =>
       }
     }
 
-    if(myCars.length === 0) fetchCars();
-  }, [])
-  console.log(myCars);
+    if(myCars.length === 0 && userId) fetchCars();
+  }, [userId])
+  // console.log(myCars);
   
 
 
@@ -51,7 +67,10 @@ const CarDetailsForm: React.FC<CarDetailsFormProps> = ({ onSubmit, onClose }) =>
 
   const addNewCar = async (data: FormData) => {
     try {
-      const response = await axios.post(import.meta.env.VITE_API_URL + '/user/addCar' + '/681745b1acb7016e929527da', data);
+      const response = await axios.post(
+        import.meta.env.VITE_API_URL + '/user/addCar/' + userId,
+        data
+        );
 
       const newData = response.data.data;
       setMyCars((prevCars) => [...prevCars, newData]);
@@ -183,7 +202,6 @@ const CarDetailsForm: React.FC<CarDetailsFormProps> = ({ onSubmit, onClose }) =>
             )}
           </div>
 
-          {/* //asdf */}
           <Button
                 type="button"
                 onClick={handleSubmit((data: FormData) => addNewCar(data))}
