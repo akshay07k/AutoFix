@@ -1,26 +1,81 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  BarChart3,
-  DollarSign,
+  UserCog,
+  IndianRupee,
   ShoppingBag,
   UserCheck,
 } from 'lucide-react';
+import { getBookingStats, getRecentBookings, getUserStats } from '../apis/Dashboard';
 
 const Dashboard: React.FC = () => {
 
-    const stats = [
-        { title: 'Total Revenue', value: '$54,239', icon: DollarSign, change: '+12.5%', positive: true },
-        { title: 'Active Users', value: '2,345', icon: UserCheck, change: '+18.2%', positive: true },
-        { title: 'Total Orders', value: '1,235', icon: ShoppingBag, change: '-3.1%', positive: false },
-        { title: 'Conversion Rate', value: '3.15%', icon: BarChart3, change: '+2.4%', positive: true },
-      ];
+  const [stats, setStats] = useState([
+    { title: 'Total Revenue', value: 'Loading...', icon: IndianRupee },
+    { title: 'Active Users', value: 'Loading...', icon: UserCheck },
+    { title: 'Total Orders', value: 'Loading...', icon: ShoppingBag },
+    { title: 'Total Mechanics', value: 'Loading...', icon: UserCog },
+  ]);
     
-      const recentOrders = [
+      const [recentOrders, setRecentOrders] = useState([
         { id: '#1234', customer: 'John Doe', status: 'Completed', amount: '234.50', date: '2024-03-10' },
         { id: '#1235', customer: 'Jane Smith', status: 'Pending', amount: '129.99', date: '2024-03-09' },
         { id: '#1236', customer: 'Robert Johnson', status: 'Processing', amount: '549.00', date: '2024-03-09' },
         { id: '#1237', customer: 'Emily Brown', status: 'Completed', amount: '89.99', date: '2024-03-08' },
-      ];
+      ]);
+
+    useEffect(() => {
+      const fetchBookingStats = async () => {
+        try {
+          const response = await getBookingStats();
+          setStats((prevStats) => [
+            { ...prevStats[0], value: `Rs. ${response.totalRevenue}` },
+            {...prevStats[1]},
+            { ...prevStats[2], value: response.totalOrders }, 
+            {...prevStats[3]},
+          ]);
+        } catch (error) {
+          console.error('Error fetching booking stats:', error);
+        }
+      };
+      const fetchUserStats = async () => {
+        try {
+          const response = await getUserStats();
+          setStats((prevStats) => [
+            { ...prevStats[0] },
+            { ...prevStats[1], value: response.totalUsers },
+            { ...prevStats[2] },
+            { ...prevStats[3], value: response.totalMechanics },
+          ]);
+        } catch (error) {
+          console.error('Error fetching user stats:', error);
+        }
+      }
+
+      fetchBookingStats();
+      fetchUserStats();
+    }, []);
+    console.log(stats);
+
+    useEffect(() => {
+      const fetchRecentBookings = async () => {
+        try {
+          const response = await getRecentBookings();
+          setRecentOrders(() => [
+            ...response.map((order: any) => ({
+              id: order._id,
+              customer: order.name,
+              status: order.status,
+              amount: order.totalAmount,
+              date: new Date(order.createdAt).toLocaleDateString(),
+            })),
+          ]);
+        } catch (error) {
+          console.error('Error fetching recent bookings:', error);
+        }
+      };
+      fetchRecentBookings();
+    }, []);
+    
 
   return (
     <>
@@ -32,14 +87,14 @@ const Dashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-500">{stat.title}</p>
-                    <h3 className="text-xl lg:text-2xl font-bold mt-1">{stat.value}</h3>
+                    <h3 className={`text-xl lg:text-2xl font-bold mt-1 ${stat.value == "Loading..." ? "text-sm font-light" : ""}`}>{stat.value}</h3>
                   </div>
                   <div className="bg-gray-100 p-3 rounded-lg">
                     <stat.icon className="h-6 w-6 text-gray-700" />
                   </div>
                 </div>
-                <div className={`mt-4 text-sm ${stat.positive ? 'text-green-600' : 'text-red-600'}`}>
-                  {stat.change} from last month
+                <div className={`mt-4 text-sm text-green-600`}>
+                  
                 </div>
               </div>
             ))}
@@ -83,7 +138,8 @@ const Dashboard: React.FC = () => {
                       <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                           ${order.status === 'Completed' ? 'bg-green-100 text-green-800' : 
-                          order.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
+                          order.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                          order.status === 'Cancelled' ? 'bg-red-100 text-red-800' : 
                           'bg-blue-100 text-blue-800'}`}>
                           {order.status}
                         </span>

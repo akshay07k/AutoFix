@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Bell, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { Button, Avatar, AvatarImage, AvatarFallback } from "../ui";
 import MainNav from "./MainNav";
 import { useState } from "react";
@@ -21,18 +21,14 @@ const Header: React.FC = () => {
 
         <MainNav className="ml-16 hidden lg:flex" />
 
-        <div className="flex items-center gap-6 ml-auto">
+        <div className="flex items-center gap-6 lg:gap-12 ml-auto">
 
-          <Button variant="ghost" size="icon" className="relative text-gray-400 hover:text-white duration-300 ease-in">
-            <Bell className="h-5 w-5" />
-            <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-500" />
-            <span className="sr-only">Notifications</span>
-          </Button>
           <Link to={'/cart'}>
-          <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white duration-300 ease-in">
-            <ShoppingBag className="h-5 w-5" />
-            <span className="sr-only">Shopping cart</span>
-          </Button>
+            <Button variant="ghost" size="icon" className="relative text-gray-400 hover:text-white duration-300 ease-in">
+              <ShoppingBag className="h-5 w-5" />
+              <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-500" />
+              <span className="sr-only">Cart</span>
+            </Button>
           </Link>
 
           <button
@@ -48,7 +44,7 @@ const Header: React.FC = () => {
       
     </header>
     {UserProfile && (
-      <div className="w-full h-16 bg-transparent flex flex-col items-end justify-end z-10 absolute top-[76px]">
+      <div className="fixed top-16 z-50 w-full bg-transprent flex justify-end">
         <div className="w-40 bg-gray-50 shadow-lg rounded-lg border border-gray-200 flex flex-col items-center justify-center ">
           <Link 
           to={'/my-orders'}

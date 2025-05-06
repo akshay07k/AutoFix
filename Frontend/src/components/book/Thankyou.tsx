@@ -62,7 +62,7 @@ const ThankYou: React.FC = () => {
                     {firstItem?.service?.title}
                     </p>
                     <p className="text-2xl font-bold text-blue-600">
-                    Rs. {order?.totalAmount}
+                    Rs. {firstItem?.service?.price}
                     </p>
                 </div>
                 

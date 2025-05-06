@@ -4,7 +4,6 @@ import {
     Calendar,
     CheckCircle,
     Clock,
-    DollarSign,
     MapPin,
     Users,
     XCircle
@@ -84,13 +83,8 @@ const Orders: React.FC = () => {
                 <div className="p-6">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                     <div className="flex items-center">
-                    <img
-                        src={order.customerImage}
-                        alt={order.customerName}
-                        className="h-12 w-12 rounded-full object-cover"
-                    />
                     <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-900">{order.customerName}</h3>
+                        <h3 className="text-lg font-semibold text-gray-900">{order.name}</h3>
                         <p className="text-sm text-gray-500">{order.service}</p>
                     </div>
                     </div>
@@ -124,14 +118,6 @@ const Orders: React.FC = () => {
                         {order.notes}
                         </div>
                     )}
-                    <div className='lg:mt-8'>
-                        <button className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200">
-                            View Details
-                        </button>
-                        <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200">
-                            Update Status
-                        </button>
-                    </div>
                 </div>
                 </div>
             </div>
@@ -146,7 +132,7 @@ export default Orders
 const orders = [
     {
       id: 'ORD-2024-001',
-      customerName: 'James Wilson',
+      name: 'James Wilson',
       service: 'Engine Repair',
       mechanic: 'John Smith',
       scheduledDate: '2024-03-15 10:00 AM',
@@ -158,7 +144,7 @@ const orders = [
     },
     {
       id: 'ORD-2024-002',
-      customerName: 'Emily Brown',
+      name: 'Emily Brown',
       service: 'Oil Change',
       mechanic: 'Maria Rodriguez',
       scheduledDate: '2024-03-15 02:30 PM',
@@ -170,7 +156,7 @@ const orders = [
     },
     {
       id: 'ORD-2024-003',
-      customerName: 'Michael Chen',
+      name: 'Michael Chen',
       service: 'Brake Replacement',
       mechanic: 'David Chen',
       scheduledDate: '2024-03-16 09:15 AM',
@@ -182,7 +168,7 @@ const orders = [
     },
     {
       id: 'ORD-2024-004',
-      customerName: 'Sarah Johnson',
+      name: 'Sarah Johnson',
       service: 'Transmission Service',
       mechanic: 'Michael Brown',
       scheduledDate: '2024-03-16 11:30 AM',
@@ -194,7 +180,7 @@ const orders = [
     },
     {
       id: 'ORD-2024-005',
-      customerName: 'Robert Taylor',
+      name: 'Robert Taylor',
       service: 'AC Repair',
       mechanic: 'Sarah Johnson',
       scheduledDate: '2024-03-15 04:00 PM',

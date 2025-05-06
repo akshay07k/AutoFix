@@ -16,7 +16,7 @@
         return 'bg-green-100 text-green-800';
       case 'Pending':
         return 'bg-amber-100 text-amber-800';
-      case 'In Progress':
+      case 'Confirmed':
         return 'bg-blue-100 text-blue-800';
       case 'Cancelled':
         return 'bg-red-100 text-red-800';

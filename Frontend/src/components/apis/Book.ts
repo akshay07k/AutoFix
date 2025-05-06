@@ -3,6 +3,7 @@ import axios from "axios";
 
 export const createBooking = async (bookingData: any) => {
     try {
+        bookingData.name = "Akshay";
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/book/createBooking`, bookingData);
         return response.data;
     }

@@ -4,39 +4,36 @@ import OrderItem from './OrderItem';
 import { Order } from './OrderType';
 import { getBookingsByUser } from '../apis/Book';
 
-
-
 const OrderHistory: React.FC = () => {
   const [orders, setOrders] = useState<Order[] | []>([]);
   const [openOrderId, setOpenOrderId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const res = await getBookingsByUser();
-                setOrders(res.data);
-            } catch (err) {
-                console.error(err);
-            } 
-        };
-        if(orders.length === 0) fetchOrders();
-    }
-    , []);
-
-    console.log(orders);
-    
+  useEffect(() => {
+    const fetchOrders = async () => {
+        try {
+            const res = await getBookingsByUser();
+            setOrders(res.data);
+        } catch (err) {
+            console.error(err);
+        } 
+    };
+    if(orders.length === 0) fetchOrders();
+  }
+  , []);
 
   const toggleOrder = (id: string) => {
     setOpenOrderId(openOrderId === id ? null : id);
   };
 
   const filteredOrders = orders.filter(order => {
+    // Filter by status
     if (filterStatus !== 'All' && order.status !== filterStatus) {
       return false;
     }
     
+    // Filter by search term
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
       const carDetails = order.items[0].carDetails;
@@ -140,174 +137,3 @@ const ChevronDownIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 export default OrderHistory;
 
-
-// const mockOrders: Order[] = [
-//     {
-//       _id: "6817ae143d4267b1f4b0c1e1",
-//       userId: "681745b1acb7016e929527da",
-//       items: [
-//         {
-//           service: {
-//             title: "Battery Replacement",
-//             price: 2499,
-//             features: [
-//               "New high-quality battery",
-//               "Professional installation",
-//               "Old battery disposal"
-//             ]
-//           },
-//           carDetails: {
-//             carMake: "Suzuki",
-//             carModel: "Swift",
-//             year: 2017,
-//             licensePlate: "hp28"
-//           },
-//           _id: "6817ae143d4267b1f4b0c1e2"
-//         }
-//       ],
-//       location: {
-//         address: "Atal kunj",
-//         city: "baddi",
-//         state: "hp",
-//         pin: "174103",
-//         country: "India",
-//         _id: "6817ae143d4267b1f4b0c1e3"
-//       },
-//       scheduleTime: {
-//         date: "2025-05-17",
-//         time: "10:00 AM",
-//         _id: "6817ae143d4267b1f4b0c1e4"
-//       },
-//       totalAmount: 2499,
-//       status: "Pending",
-//       createdAt: "2025-05-04T18:12:36.598Z",
-//       updatedAt: "2025-05-04T18:12:36.598Z",
-//       __v: 0
-//     },
-//     {
-//       _id: "6817ae143d4267b1f4b0c1e5",
-//       userId: "681745b1acb7016e929527da",
-//       items: [
-//         {
-//           service: {
-//             title: "Oil Change",
-//             price: 1999,
-//             features: [
-//               "Premium synthetic oil",
-//               "New oil filter",
-//               "Multi-point inspection"
-//             ]
-//           },
-//           carDetails: {
-//             carMake: "Honda",
-//             carModel: "Civic",
-//             year: 2019,
-//             licensePlate: "DL01AB1234"
-//           },
-//           _id: "6817ae143d4267b1f4b0c1e6"
-//         }
-//       ],
-//       location: {
-//         address: "123 Main Street",
-//         city: "New Delhi",
-//         state: "Delhi",
-//         pin: "110001",
-//         country: "India",
-//         _id: "6817ae143d4267b1f4b0c1e7"
-//       },
-//       scheduleTime: {
-//         date: "2025-04-25",
-//         time: "02:30 PM",
-//         _id: "6817ae143d4267b1f4b0c1e8"
-//       },
-//       totalAmount: 1999,
-//       status: "Completed",
-//       createdAt: "2025-04-15T10:30:00.000Z",
-//       updatedAt: "2025-04-25T15:45:00.000Z",
-//       __v: 0
-//     },
-//     {
-//       _id: "6817ae143d4267b1f4b0c1e9",
-//       userId: "681745b1acb7016e929527da",
-//       items: [
-//         {
-//           service: {
-//             title: "Brake Pad Replacement",
-//             price: 4999,
-//             features: [
-//               "Premium brake pads",
-//               "Rotor inspection",
-//               "Brake fluid check"
-//             ]
-//           },
-//           carDetails: {
-//             carMake: "Toyota",
-//             carModel: "Camry",
-//             year: 2020,
-//             licensePlate: "MH02CD5678"
-//           },
-//           _id: "6817ae143d4267b1f4b0c1ea"
-//         }
-//       ],
-//       location: {
-//         address: "456 Park Avenue",
-//         city: "Mumbai",
-//         state: "Maharashtra",
-//         pin: "400001",
-//         country: "India",
-//         _id: "6817ae143d4267b1f4b0c1eb"
-//       },
-//       scheduleTime: {
-//         date: "2025-06-10",
-//         time: "11:00 AM",
-//         _id: "6817ae143d4267b1f4b0c1ec"
-//       },
-//       totalAmount: 4999,
-//       status: "In Progress",
-//       createdAt: "2025-05-20T14:45:00.000Z",
-//       updatedAt: "2025-05-20T14:45:00.000Z",
-//       __v: 0
-//     },
-//     {
-//       _id: "6817ae143d4267b1f4b0c1ed",
-//       userId: "681745b1acb7016e929527da",
-//       items: [
-//         {
-//           service: {
-//             title: "AC Service",
-//             price: 3499,
-//             features: [
-//               "Refrigerant recharge",
-//               "System inspection",
-//               "Filter cleaning"
-//             ]
-//           },
-//           carDetails: {
-//             carMake: "Hyundai",
-//             carModel: "Creta",
-//             year: 2021,
-//             licensePlate: "KA03EF9012"
-//           },
-//           _id: "6817ae143d4267b1f4b0c1ee"
-//         }
-//       ],
-//       location: {
-//         address: "789 Church Street",
-//         city: "Bangalore",
-//         state: "Karnataka",
-//         pin: "560001",
-//         country: "India",
-//         _id: "6817ae143d4267b1f4b0c1ef"
-//       },
-//       scheduleTime: {
-//         date: "2025-04-05",
-//         time: "09:30 AM",
-//         _id: "6817ae143d4267b1f4b0c1f0"
-//       },
-//       totalAmount: 3499,
-//       status: "Cancelled",
-//       createdAt: "2025-03-25T11:20:00.000Z",
-//       updatedAt: "2025-03-30T16:15:00.000Z",
-//       __v: 0
-//     }
-//   ];
