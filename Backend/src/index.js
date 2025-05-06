@@ -15,6 +15,6 @@ dbConnect()
     });
 })
 .catch((error) => {
-    console.error("Error connecting to database: ", error);
+    console.error("Error connecting to database: ", error)``;
     process.exit(1);
 });
