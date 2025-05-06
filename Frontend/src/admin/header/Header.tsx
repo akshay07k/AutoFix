@@ -1,9 +1,9 @@
 import React from 'react'
-import {
-  Bell,
-  Search,
-  Menu
-} from 'lucide-react';
+// import {
+//   Bell,
+//   Search,
+//   Menu
+// } from 'lucide-react';
 
 interface HeaderProps {
   isSearchOpen: boolean;
@@ -12,12 +12,12 @@ interface HeaderProps {
 }
 
 
-const NavBar: React.FC<HeaderProps> = ({isSearchOpen, setIsSearchOpen, setIsSidebarOpen}) => {
+const NavBar: React.FC<HeaderProps> = () => {
   return (
     <>
         <header className="bg-white border-b border-gray-200 z-10">
-          <div className="flex h-16 items-center justify-between px-4 lg:px-6">
-            <div className="flex items-center flex-1">
+          <div className="flex h-16 items-center justify-end px-4 lg:px-6">
+            {/* <div className="flex items-center flex-1">
               <button 
                 onClick={() => setIsSidebarOpen(true)}
                 className="p-2 rounded-lg hover:bg-gray-100 lg:hidden"
@@ -44,12 +44,12 @@ const NavBar: React.FC<HeaderProps> = ({isSearchOpen, setIsSearchOpen, setIsSide
                   />
                 </div>
               </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="p-2 hover:bg-gray-100 rounded-full relative">
+            </div> */}
+            <div className="flex items-center space-x-4 mr-8">
+              {/* <button className="p-2 hover:bg-gray-100 rounded-full relative">
                 <Bell className="h-5 w-5" />
                 <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-              </button>
+              </button> */}
               <div className="flex items-center space-x-2">
                 <img
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"

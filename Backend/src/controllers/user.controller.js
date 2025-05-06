@@ -204,6 +204,46 @@ const getAllCars = asyncHandler(async (req, res) => {
   }
 });
 
+const getUserStats = asyncHandler(async (req, res) => {
+  try {
+    const stats = await User.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalUsers: {
+            $sum: {
+              $cond: [
+                { $eq: ["$role", "user"] },
+                1,
+                0
+              ]
+            }
+          },
+          totalMechanics: {
+            $sum: {
+              $cond: [
+                { $eq: ["$role", "mechanic"] },
+                1,
+                0
+              ]
+            }
+          }
+        }
+      }
+    ]);
+
+    // stats will be something like [{ _id: null, totalUsers: 25, totalMechanics: 10 }]
+    const { totalUsers = 0, totalMechanics = 0 } = stats[0] || {};
+
+    return res.status(200).json(
+      new ApiResponse(200, { totalUsers, totalMechanics }, 'User statistics fetched successfully')
+    );
+  } catch (error) {
+    throw new ApiError(500, 'Error fetching user statistics', [error]);
+  }
+});
+
+
 
 
 export {
@@ -215,5 +255,6 @@ export {
     loginUser,
     logout,
     addCar,
-    getAllCars
+    getAllCars,
+    getUserStats
 }

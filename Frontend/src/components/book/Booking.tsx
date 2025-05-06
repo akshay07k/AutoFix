@@ -4,6 +4,7 @@ import { MapPin, Calendar, ChevronRight, Car, PenTool as Tools, Check } from 'lu
 import { BookingData, Location, CartItem } from '../services/Type.Services'
 import { getCartItems } from '../apis/Cart';
 import { useNavigate } from 'react-router-dom';
+import { createBooking } from '../apis/Book';
 
 
 const timeSlots = [
@@ -80,7 +81,7 @@ function Booking() {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     // alert('Booking confirmed! We will send you a confirmation email shortly.');
 
     const bookingData = {
@@ -90,12 +91,15 @@ function Booking() {
       scheduleTime: bookingDetails.schedule,
       totalAmount: calculateTotal(),
     }
-    console.log(bookingData);
-    navigator.clipboard.writeText(JSON.stringify(bookingData))
+    // navigator.clipboard.writeText(JSON.stringify(bookingData));
+    
+    const res = await createBooking(bookingData);
+    console.log(res);
+    
     
     setBookingDetails({ location: undefined, schedule: { date: '', time: '' } });
     reset();
-    navigate("/cart");
+    navigate("/order-confirmed/" + res.data._id);
   };
 
   return (

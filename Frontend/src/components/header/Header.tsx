@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { Link, useLocation } from "react-router-dom";
 import { Bell, ShoppingBag } from "lucide-react";
+=======
+import { Link } from "react-router-dom";
+import { ShoppingBag } from "lucide-react";
+>>>>>>> 4412608a55b91b27baefeee1686c7e1b8a612519
 import { Button, Avatar, AvatarImage, AvatarFallback } from "../ui";
 import MainNav from "./MainNav";
 import { useState } from "react";
@@ -51,6 +56,7 @@ const Header: React.FC = () => {
         </div>
       </header>
 
+<<<<<<< HEAD
       {UserProfile && !hideContent && (
         <div className="w-full h-16 bg-transparent flex flex-col items-end justify-end z-10 absolute top-[76px]">
           <div className="w-40 bg-gray-50 shadow-lg rounded-lg border border-gray-200 flex flex-col items-center justify-center">
@@ -69,5 +75,46 @@ const Header: React.FC = () => {
     </>
   );
 };
+=======
+        <MainNav className="ml-16 hidden lg:flex" />
+
+        <div className="flex items-center gap-6 lg:gap-12 ml-auto">
+
+          <Link to={'/cart'}>
+            <Button variant="ghost" size="icon" className="relative text-gray-400 hover:text-white duration-300 ease-in">
+              <ShoppingBag className="h-5 w-5" />
+              <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-500" />
+              <span className="sr-only">Cart</span>
+            </Button>
+          </Link>
+
+          <button
+          onClick={() => setUserProfile(!UserProfile)}
+          >
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="./placeholder.svg" alt="User" className="z-10" />
+            <AvatarFallback className="z-0">U</AvatarFallback>
+          </Avatar>
+          </button>
+        </div>
+      </div>
+      
+    </header>
+    {UserProfile && (
+      <div className="fixed top-16 z-50 w-full bg-transprent flex justify-end">
+        <div className="w-40 bg-gray-50 shadow-lg rounded-lg border border-gray-200 flex flex-col items-center justify-center ">
+          <Link 
+          to={'/my-orders'}
+          onClick={() => setUserProfile(false)}
+          className="w-full px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-500 hover:bg-gray-100 rounded-lg focus:outline-none transition duration-200 text-center">
+            My Orders
+          </Link>
+          <button className="w-full px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-100 rounded-lg focus:outline-none transition duration-200">
+            Logout
+          </button>
+        </div>
+      </div>    
+    )}
+>>>>>>> 4412608a55b91b27baefeee1686c7e1b8a612519
 
 export default Header;

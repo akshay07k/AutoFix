@@ -8,6 +8,7 @@ import {
   loginUser,
   addCar,
   getAllCars,
+  getUserStats,
 } from '../controllers/user.controller.js';
 
 const router = express.Router();
@@ -19,8 +20,9 @@ router.get('/getAllCars/:userId', getAllCars);
 
 // For Admin
 router.get('/getAllUsers', getAllUsers);
-router.get('/:id', getUserById);
+router.get('/getUserById/:id', getUserById);
 router.put('/update', updateUser);
 router.delete('/:id', deleteUser);
+router.get('/stats', getUserStats);
 
 export default router;

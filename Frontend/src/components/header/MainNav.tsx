@@ -19,8 +19,8 @@ const items = [
     href: "#reviews",
   },
   {
-    title: "Become a Mechanic",
-    href: "/mechanic",
+    title: "Book Appointment",
+    href: "/services/consultation",
   },
 ];
 

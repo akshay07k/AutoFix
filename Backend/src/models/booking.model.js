@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 
 const itemSchema = new Schema({
   service: {
-    title: { type: String, required: true },
+    title: { type: String, default: '', required: false },
     price: { type: Number, required: true },
     features: { type: [String], required: true },
   },
@@ -55,6 +55,13 @@ const bookingSchema = new Schema(
       type: Schema.Types.ObjectId, 
       required: true, 
       ref: 'User' 
+    },
+    name: { 
+      type: String, 
+      required: true 
+    },
+    mechanic: { 
+      type: String, 
     },
     items: [itemSchema],
     location: { 
