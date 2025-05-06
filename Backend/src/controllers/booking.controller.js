@@ -6,7 +6,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 
 const createBooking = asyncHandler(async (req, res) => {
   try {
-    const { userId, items, location, scheduleTime, totalAmount } = req.body;
+    const { userId, name, items, location, scheduleTime, totalAmount } = req.body;
 
     if (!items || items.length === 0) {
       throw new ApiError(400, 'Cart items are required to create a booking');
@@ -31,6 +31,7 @@ const createBooking = asyncHandler(async (req, res) => {
     
     const newBooking = new Booking({
       userId,
+      name,
       items: sanitizedItems,
       location,
       scheduleTime,
@@ -125,11 +126,64 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
   }
 });
 
+
+const getBookingStats = asyncHandler(async (req, res) => {
+  try {
+    const stats = await Booking.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: "$totalAmount" },
+          totalOrders: { $sum: 1 },
+        },
+      },
+    ]);
+
+     // Handle case when no data exists
+    const result = stats[0] || { totalRevenue: 0, totalOrders: 0 };
+
+    return res.status(200).json(
+        new ApiResponse(200, result, 'Booking statistics fetched successfully')
+    );
+  } catch (error) {
+    throw new ApiError(500, 'Error fetching booking statistics', [error]);
+  }
+});
+
+const getrecentBookings = asyncHandler(async (req, res) => {
+  try {
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+    const bookings = await Booking.find(
+      { createdAt: { $gte: oneMonthAgo } },
+      { _id: 1, name: 1, totalAmount: 1, createdAt: 1, status: 1 }
+    )
+      .sort({ createdAt: -1 })
+      .limit(10);
+
+    if (!bookings.length) {
+      return res.status(404).json(
+        new ApiResponse(404, [], "No recent bookings found")
+      );
+    }
+
+    return res.status(200).json(
+      new ApiResponse(200, bookings, "Recent bookings fetched successfully")
+    );
+  } catch (error) {
+    throw new ApiError(500, "Error fetching recent bookings", [error]);
+  }
+});
+
+
 export {
     createBooking,
     getAllBookings,
     getBookingById,
     getBookingsByUser,
     cancelBooking,
-    updateBookingStatus
+    updateBookingStatus,
+    getBookingStats,
+    getrecentBookings
 }

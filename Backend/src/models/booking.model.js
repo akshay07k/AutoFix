@@ -56,6 +56,13 @@ const bookingSchema = new Schema(
       required: true, 
       ref: 'User' 
     },
+    name: { 
+      type: String, 
+      required: true 
+    },
+    mechanic: { 
+      type: String, 
+    },
     items: [itemSchema],
     location: { 
       type: locationSchema, 
