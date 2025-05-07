@@ -26,6 +26,19 @@ export const getUserStats = async () => {
     }
 };
 
+export const getMechanicStats = async () => {
+    try {
+        const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/mechanic/stats`
+        );
+        return response.data.data[0];
+    }
+    catch(error) {
+        console.log("Error fetching mechanic stats", error);
+        throw error;
+    }
+};
+
 export const getRecentBookings = async () => {
     try {
         const response = await axios.get(

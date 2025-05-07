@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Car, Calendar, MapPin } from 'lucide-react';
-import { Order } from './OrderType';
+import { Order } from '../type/OrderType';
 import { formatDate, getStatusColorClass } from '../../utils/formatters';
-import { updateOrderStatus } from '../apis/Book';
+import { updateOrderStatus } from '../apis/Order';
 
 interface OrderItemProps {
   order: Order;
@@ -16,12 +16,13 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, isOpen, toggleOrder }) => 
   const updateStatus = async (orderId: string, status: string) => {
     try {
       const response = await updateOrderStatus(orderId, status);
-      if (!response) {
+      if(!response) {
         console.log("Error updating order status");
         return;
       }
-      setStatus("Cancelled");
-      order.status = "Cancelled"; 
+      setStatus("Confirmed"); 
+      order.status = "Confirmed";
+
     } catch (error) {
       console.log("Error updating order status:", error);
     }
@@ -68,6 +69,9 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, isOpen, toggleOrder }) => 
       {/* Order Details - Visible when expanded */}
       {isOpen && (
         <div className="border-t border-gray-200 p-4 bg-gray-50 animate-fadeIn">
+          <h1
+          className='text-xl font-bold text-gray-900 mb-4'
+          >{order.name}</h1>
           {order.items.map((item: any, index: number) => (
             <div key={item._id} className={`${index > 0 ? 'mt-6 pt-6 border-t border-gray-200' : ''}`}>
               <h3 className="font-medium text-lg text-gray-900 mb-4">
@@ -132,11 +136,12 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, isOpen, toggleOrder }) => 
             <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
               Contact Support
             </button>
-            {order.status !== "Completed" && order.status !== "Cancelled" && (
-              <button className="px-4 py-2 text-sm font-medium text-white bg-red-500 border border-transparent rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 transition-colors"
-              onClick={() => updateStatus(order._id, "Cancelled")}
+            {order.status == "Pending"  && (
+              <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent ro`unded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              onClick={() => updateStatus(order._id, "Confirmed")}
               >
-                Cancel
+                Confirm Order
+                {/* Assign to Mechanic */}
               </button>
             )}
           </div>

@@ -29,7 +29,10 @@ const Login = () => {
         setError(data.message || "Login failed.");
       } else {
         localStorage.setItem("user", JSON.stringify(data.data));
-        navigate("/");
+
+        if(data.data.role == "user") navigate("/");
+        else navigate("/admin");
+        
         window.location.reload();
       }
     } catch (err) {

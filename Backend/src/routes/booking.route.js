@@ -12,7 +12,7 @@ import {
 
 const router = express.Router();
 
-router.post('/updateBookingStatus/:id', updateBookingStatus);
+router.put('/updateBookingStatus/:id', updateBookingStatus);
 router.post('/createBooking', createBooking);
 router.get('/getAllBookings', getAllBookings);
 router.get('/getBookingById/:id', getBookingById);

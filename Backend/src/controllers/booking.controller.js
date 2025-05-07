@@ -131,6 +131,11 @@ const getBookingStats = asyncHandler(async (req, res) => {
   try {
     const stats = await Booking.aggregate([
       {
+        $match: {
+          status: { $ne: "Cancelled" },
+        },
+      },
+      {
         $group: {
           _id: null,
           totalRevenue: { $sum: "$totalAmount" },

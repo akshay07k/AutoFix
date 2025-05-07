@@ -1,9 +1,10 @@
 import React from 'react'
 import { Clock, Shield, Trophy, Wrench } from 'lucide-react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui';
 
 const AllServices: React.FC = () => {
+    const navigate = useNavigate();
     const features = [
         {
           icon: Clock,
@@ -45,7 +46,8 @@ const AllServices: React.FC = () => {
                     Keep your vehicle running smoothly with our expert maintenance services.
                     Book your appointment today!
                     </p>
-                    <Button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700">
+                    <Button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700"
+                    onClick={() => navigate('consultation')}>
                     Schedule Service
                     </Button>
                 </div>

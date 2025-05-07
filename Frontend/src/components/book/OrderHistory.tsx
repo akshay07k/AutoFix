@@ -52,6 +52,7 @@ const OrderHistory: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-900">Your Orders</h1>
         <button 
           className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+          onClick={() => window.location.reload()}
         >
           <RefreshCw className="w-4 h-4 mr-1" />
           <span>Refresh</span>
@@ -84,7 +85,7 @@ const OrderHistory: React.FC = () => {
           >
             <option value="All">All Status</option>
             <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
+            <option value="Confirmed">Confirmed</option>
             <option value="Completed">Completed</option>
             <option value="Cancelled">Cancelled</option>
           </select>

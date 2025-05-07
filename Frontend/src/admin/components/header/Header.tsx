@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui';
+import { useNavigate } from 'react-router-dom';
 // import {
 //   Bell,
 //   Search,
@@ -13,6 +15,25 @@ interface HeaderProps {
 
 
 const NavBar: React.FC<HeaderProps> = () => {
+  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      } else {
+        setUser(null);
+      }
+    }, []);
+
+    const logOut = () => {
+      localStorage.removeItem("user");
+      setUser(null);
+      window.scrollTo(0, 0);
+      navigate("/");
+    }
+
   return (
     <>
         <header className="bg-white border-b border-gray-200 z-10">
@@ -51,12 +72,19 @@ const NavBar: React.FC<HeaderProps> = () => {
                 <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
               </button> */}
               <div className="flex items-center space-x-2">
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt="Profile"
-                  className="h-8 w-8 rounded-full object-cover"
-                />
-                <span className="font-medium text-sm hidden sm:block">Admin User</span>
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="./placeholder.svg" alt="User" className="z-10" />
+                <AvatarFallback className="z-0">{user?.name[0]}</AvatarFallback>
+              </Avatar>
+                <span className="font-medium text-sm ">{user?.name}</span>
+              </div>
+              <div className='mx-4'>
+                <button
+                 className='text-red-600 font-medium text-sm bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg transition duration-300 ease-in-out'
+                 onClick={() => logOut()}
+                >
+                  Logout
+                </button>
               </div>
             </div>
           </div>

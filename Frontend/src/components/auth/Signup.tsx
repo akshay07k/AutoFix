@@ -30,7 +30,10 @@ const Signup = () => {
       } else {
         const userString = JSON.stringify(data.data);
         localStorage.setItem("user", userString);
-        navigate("/");
+        
+        if(data.data.role == "user") navigate("/");
+        else navigate("/admin");
+        
         window.location.reload();
       }
     } catch (err) {

@@ -5,7 +5,7 @@ import {
   ShoppingBag,
   UserCheck,
 } from 'lucide-react';
-import { getBookingStats, getRecentBookings, getUserStats } from '../apis/Dashboard';
+import { getBookingStats, getMechanicStats, getRecentBookings, getUserStats } from '../apis/Dashboard';
 
 const Dashboard: React.FC = () => {
 
@@ -24,37 +24,30 @@ const Dashboard: React.FC = () => {
       ]);
 
     useEffect(() => {
-      const fetchBookingStats = async () => {
+      const fetchStats = async () => {
         try {
-          const response = await getBookingStats();
+          const [bookingDetails, userDetails, mechanicDetails] = await Promise.all([
+            getBookingStats(),
+            getUserStats(),
+            getMechanicStats(),
+          ]);
+
           setStats((prevStats) => [
-            { ...prevStats[0], value: `Rs. ${response.totalRevenue}` },
-            {...prevStats[1]},
-            { ...prevStats[2], value: response.totalOrders }, 
-            {...prevStats[3]},
+            { ...prevStats[0], value: `Rs. ${bookingDetails?.totalRevenue || 0}` },
+            { ...prevStats[1], value: userDetails?.totalUsers || 0 },
+            { ...prevStats[2], value: bookingDetails?.totalOrders || 0 },
+            { ...prevStats[3], value: mechanicDetails?.count || 0 },
           ]);
         } catch (error) {
-          console.error('Error fetching booking stats:', error);
+          console.error('Error fetching stats:', error);
         }
       };
-      const fetchUserStats = async () => {
-        try {
-          const response = await getUserStats();
-          setStats((prevStats) => [
-            { ...prevStats[0] },
-            { ...prevStats[1], value: response.totalUsers },
-            { ...prevStats[2] },
-            { ...prevStats[3], value: response.totalMechanics },
-          ]);
-        } catch (error) {
-          console.error('Error fetching user stats:', error);
-        }
-      }
 
-      fetchBookingStats();
-      fetchUserStats();
-    }, []);
-    console.log(stats);
+      if (stats[0].value === 'Loading...') {
+        fetchStats();
+      }
+    }, [stats]);
+    // console.log(stats);
 
     useEffect(() => {
       const fetchRecentBookings = async () => {
@@ -86,7 +79,7 @@ const Dashboard: React.FC = () => {
               <div key={index} className="bg-white rounded-xl p-4 lg:p-6 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-500">{stat.title}</p>
+                    <p className={`text-sm font-semibold ${index%2 == 0 ? "text-green-500" : "text-blue-500"}`}>{stat.title}</p>
                     <h3 className={`text-xl lg:text-2xl font-bold mt-1 ${stat.value == "Loading..." ? "text-sm font-light" : ""}`}>{stat.value}</h3>
                   </div>
                   <div className="bg-gray-100 p-3 rounded-lg">

@@ -1,201 +1,140 @@
-import React, { useState } from 'react'
-import {
-    AlertCircle,
-    Calendar,
-    CheckCircle,
-    Clock,
-    MapPin,
-    Users,
-    XCircle
-} from 'lucide-react'
+import React, { useEffect, useState } from 'react';
+import { Search, Filter, RefreshCw } from 'lucide-react';
+import OrderItem from '../components/OrderItem';
+import { Order } from '../type/OrderType';
+import { getAllOrders } from '../apis/Order';
 
-const Orders: React.FC = () => {
+const OrderHistory: React.FC = () => {
+  const [orders, setOrders] = useState<Order[] | []>([]);
+  const [openOrderId, setOpenOrderId] = useState<string | null>(null);
+  const [filterStatus, setFilterStatus] = useState<string>('All');
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
-    const [selectedFilter, setSelectedFilter] = useState('all');
-
-    const getStatusIcon = (status: string) => {
-        switch (status) {
-          case 'completed':
-            return <CheckCircle className="h-5 w-5 text-green-500" />;
-          case 'cancelled':
-            return <XCircle className="h-5 w-5 text-red-500" />;
-          case 'in-progress':
-            return <Clock className="h-5 w-5 text-blue-500" />;
-          case 'pending':
-            return <AlertCircle className="h-5 w-5 text-yellow-500" />;
-          default:
-            return null;
-        }
+  useEffect(() => {
+    const fetchOrders = async () => {
+        try {
+            const res = await getAllOrders();
+            setOrders(res.data);
+        } catch (err) {
+            console.error(err);
+        } 
     };
+    if(orders.length === 0) fetchOrders();
+  }
+  , []);
+
+  const toggleOrder = (id: string) => {
+    setOpenOrderId(openOrderId === id ? null : id);
+  };
+
+  const filteredOrders = orders.filter(order => {
+    // Filter by status
+    if (filterStatus !== 'All' && order.status !== filterStatus) {
+      return false;
+    }
     
-    const getStatusClass = (status: string) => {
-        switch (status) {
-          case 'completed':
-            return 'bg-green-100 text-green-800';
-          case 'cancelled':
-            return 'bg-red-100 text-red-800';
-          case 'in-progress':
-            return 'bg-blue-100 text-blue-800';
-          case 'pending':
-            return 'bg-yellow-100 text-yellow-800';
-          default:
-            return 'bg-gray-100 text-gray-800';
-        }
-    };
+    // Filter by search term
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      const carDetails = order.items[0].carDetails;
+      const carInfo = `${order.name}${carDetails.carMake} ${carDetails.carModel} ${carDetails.licensePlate}`.toLowerCase();
+      const serviceInfo = order.items[0].service.title.toLowerCase();
+      
+      return carInfo.includes(searchLower) || serviceInfo.includes(searchLower);
+    }
     
-    const filteredOrders = orders.filter(order => {
-        if (selectedFilter === 'all') return true;
-        return order.status === selectedFilter;
-    });
+    return true;
+  });
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 lg:p-6">
-        {/* Filters */}
-        <div className="mb-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div className='flex items-center mb-4 sm:mb-0'>
-                <h1 className="text-2xl font-bold text-gray-900 mb-4 sm:mb-0">Orders</h1>
-                <span className="text-sm text-gray-500 ml-2">
-                ({filteredOrders.length} orders)
-                </span>
-            </div>
-            <div className="flex items-center space-x-2 overflow-x-auto pb-2 sm:pb-0">
-                {filters.map(filter => (
-                <button
-                    key={filter.id}
-                    onClick={() => setSelectedFilter(filter.id)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap
-                    ${selectedFilter === filter.id
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-100'}`}
-                >
-                    {filter.label}
-                </button>
-                ))}
-            </div>
-            </div>
+    <div className="mx-auto px-4 py-8 bg-white w-full">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Your Orders</h1>
+        <button 
+          className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+          onClick={() => window.location.reload()}
+        >
+          <RefreshCw className="w-4 h-4 mr-1" />
+          <span>Refresh</span>
+        </button>
+      </div>
+      
+      {/* Search & Filter Controls */}
+      <div className="mb-6 flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
+        <div className="relative flex-grow">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search by car or service or Customer Name"
+            className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
-
-        {/* Orders List */}
-        <div className="grid grid-cols-1 gap-4">
-            {filteredOrders.map(order => (
-            <div key={order.id} className="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div className="p-6">
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                    <div className="flex items-center">
-                    <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-900">{order.name}</h3>
-                        <p className="text-sm text-gray-500">{order.service}</p>
-                    </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${getStatusClass(order.status)}`}>
-                        {getStatusIcon(order.status)}
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                    </span>
-                    <span className="text-lg font-semibold text-gray-900 flex items-center">
-                        Rs {order.amount.toFixed(2)}
-                    </span>
-                    </div>
-                </div>
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="flex items-center text-sm text-gray-500">
-                    <Calendar className="h-5 w-5 flex-shrink-0 mr-2" />
-                    <span>{order.scheduledDate}</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                    <MapPin className="h-5 w-5 flex-shrink-0 mr-2" />
-                    <span>{order.location}</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                    <Users className="h-5 w-5 flex-shrink-0 mr-2" />
-                    <span>Assigned to: {order.mechanic}</span>
-                    </div>
-                </div>
-                <div className='flex items-center justify-between flex-wrap gap-4'>
-                    {order.notes && (
-                        <div className="mt-4 text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
-                        {order.notes}
-                        </div>
-                    )}
-                </div>
-                </div>
-            </div>
-            ))}
+        
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Filter className="h-5 w-5 text-gray-400" />
+          </div>
+          <select
+            className="block w-full pl-10 pr-8 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 appearance-none"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="All">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+            <ChevronDownIcon className="h-5 w-5 text-gray-400" />
+          </div>
         </div>
+      </div>
+      
+      {/* Orders List */}
+      <div className="space-y-4">
+        {filteredOrders.length > 0 ? (
+          filteredOrders.map((order) => (
+            <OrderItem 
+              key={order._id} 
+              order={order} 
+              isOpen={order._id === openOrderId}
+              toggleOrder={toggleOrder}
+            />
+          ))
+        ) : (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+              <Search className="h-8 w-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No orders found</h3>
+            <p className="text-gray-500">Try adjusting your search or filter to find what you're looking for.</p>
+          </div>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Orders
+// Helper component for the dropdown icon
+const ChevronDownIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 20 20" 
+    fill="currentColor" 
+    className={className}
+  >
+    <path 
+      fillRule="evenodd" 
+      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" 
+      clipRule="evenodd" 
+    />
+  </svg>
+);
 
-const orders = [
-    {
-      id: 'ORD-2024-001',
-      name: 'James Wilson',
-      service: 'Engine Repair',
-      mechanic: 'John Smith',
-      scheduledDate: '2024-03-15 10:00 AM',
-      status: 'completed',
-      amount: 450.00,
-      location: 'Downtown Workshop',
-      customerImage: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
-      notes: 'Complete engine overhaul'
-    },
-    {
-      id: 'ORD-2024-002',
-      name: 'Emily Brown',
-      service: 'Oil Change',
-      mechanic: 'Maria Rodriguez',
-      scheduledDate: '2024-03-15 02:30 PM',
-      status: 'in-progress',
-      amount: 75.00,
-      location: 'West Side Garage',
-      customerImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
-      notes: 'Regular maintenance'
-    },
-    {
-      id: 'ORD-2024-003',
-      name: 'Michael Chen',
-      service: 'Brake Replacement',
-      mechanic: 'David Chen',
-      scheduledDate: '2024-03-16 09:15 AM',
-      status: 'pending',
-      amount: 280.00,
-      location: 'East End Auto',
-      customerImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
-      notes: 'Front brake pads replacement'
-    },
-    {
-      id: 'ORD-2024-004',
-      name: 'Sarah Johnson',
-      service: 'Transmission Service',
-      mechanic: 'Michael Brown',
-      scheduledDate: '2024-03-16 11:30 AM',
-      status: 'cancelled',
-      amount: 850.00,
-      location: 'Central Auto Care',
-      customerImage: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
-      notes: 'Customer rescheduled'
-    },
-    {
-      id: 'ORD-2024-005',
-      name: 'Robert Taylor',
-      service: 'AC Repair',
-      mechanic: 'Sarah Johnson',
-      scheduledDate: '2024-03-15 04:00 PM',
-      status: 'in-progress',
-      amount: 320.00,
-      location: 'North Side Service',
-      customerImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
-      notes: 'AC compressor replacement'
-    }
-  ];
+export default OrderHistory;
 
-  const filters = [
-    { id: 'all', label: 'All Orders' },
-    { id: 'pending', label: 'Pending' },
-    { id: 'in-progress', label: 'In Progress' },
-    { id: 'completed', label: 'Completed' },
-    { id: 'cancelled', label: 'Cancelled' }
-  ];

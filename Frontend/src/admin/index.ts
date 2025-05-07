@@ -1,5 +1,5 @@
-import Header from './header/Header';
-import SideBar from './header/Sidebar';
+import Header from './components/header/Header';
+import SideBar from './components/header/Sidebar';
 import Admin from './Admin';
 import Dashboard from './pages/Dashboard';
 import Mechanics from './pages/Mechanics';

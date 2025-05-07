@@ -32,7 +32,6 @@ export const getBookingsByUser = async () => {
   }
 };
 
-
 export const getBookingById = async (bookingId: string) => {
   try {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/book/getBookingById/${bookingId}`);
@@ -40,5 +39,18 @@ export const getBookingById = async (bookingId: string) => {
   } catch (error) {
     console.error("Error fetching booking by ID:", error);
     throw error;
+  }
+};
+
+export const updateOrderStatus = async (orderId: string, status: string) => {
+  try {
+      const response = await axios.put(import.meta.env.VITE_API_URL + "/book/updateBookingStatus/" + orderId, {
+          status
+      });
+      return response.data;
+  }
+  catch (error) {
+      console.error("Error updating order status:", error);
+      throw error;
   }
 };

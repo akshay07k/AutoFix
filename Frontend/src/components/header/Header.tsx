@@ -18,7 +18,7 @@ const Header: React.FC = () => {
       setUser(null);
     }
   }, []);
-  console.log(user);
+  // console.log(user);
 
   const logOut = () => {
     localStorage.removeItem("user");

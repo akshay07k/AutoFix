@@ -33,12 +33,13 @@ import userRouter from "./routes/user.route.js"
 import cartRouter from "./routes/cart.route.js"
 import bookingRouter from "./routes/booking.route.js"
 import serviceRouter from "./routes/service.route.js"
+import mechanicRouter from "./routes/mechanic.route.js"
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/cart", cartRouter)
 app.use("/api/v1/book", bookingRouter)
 app.use("/api/v1/service", serviceRouter)
-
+app.use("/api/v1/mechanic", mechanicRouter)
 
 app.get("/", (req, res) => {
   res.send("Express + TypeScript Server");

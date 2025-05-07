@@ -23,7 +23,7 @@ const Wash: React.FC = () => {
     setSelectedService(serviceId);
     setIsFormOpen(true);
   };
-  console.log(selectedService);
+  // console.log(selectedService);
   
 
   const onSubmit = (selectedCar: string) => {

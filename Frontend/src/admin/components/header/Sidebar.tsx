@@ -3,9 +3,9 @@ import {
     LayoutDashboard,
     UserCog,
     ShoppingCart,
-    Settings,
     ChevronDown,
-    X
+    X,
+    UserPlus
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
@@ -54,11 +54,11 @@ const SideBar: React.FC<SidebarProps> = ({isSidebarCollapsed, isSidebarOpen, set
                 { icon: LayoutDashboard, label: 'Dashboard' },
                 { icon: UserCog, label: 'Mechanics' },
                 { icon: ShoppingCart, label: 'Orders' },
-                { icon: Settings, label: 'Settings' },
+                { icon: UserPlus, label: 'Add Mechanic' },
             ].map((item, index) => (
                 <NavLink
                 key={index}
-                to={`${item.label.toLowerCase()}`}
+                to={`${item.label.toLowerCase().replace(" ", "-")}`}
                 className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors duration-200"
                 >
                 <item.icon className={`h-5 w-5 ${!isSidebarCollapsed && 'lg:mr-3'}`} />

@@ -98,7 +98,7 @@ function Booking() {
     // navigator.clipboard.writeText(JSON.stringify(bookingData));
     
     const res = await createBooking(bookingData);
-    console.log(res);
+    // console.log(res);
     
     
     setBookingDetails({ location: undefined, schedule: { date: '', time: '' } });

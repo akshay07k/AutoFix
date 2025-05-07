@@ -24,7 +24,7 @@ const Admin: React.FC = () => {
         setIsSidebarOpen={setIsSidebarOpen}
       />
 
-      <main className="flex-1 flex flex-col overflow-hidden">
+      <main className="flex-1 flex flex-col overflow-auto">
         <Header
           isSearchOpen={isSearchOpen}
           setIsSearchOpen={setIsSearchOpen}

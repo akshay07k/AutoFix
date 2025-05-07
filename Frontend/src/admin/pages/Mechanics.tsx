@@ -1,13 +1,48 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MapPin, Phone, Star } from 'lucide-react'
+import { getAllMechanics } from '../apis/Mechanic';
+import { useNavigate } from 'react-router-dom';
+
+interface Mechanic {
+    _id: number;
+    name: string;
+    avatar: string;
+    email: string;
+    specialty: string;
+    experience: string;
+    rating: number;
+    reviews: number;
+    address: string;
+    availability: string;
+    phone: string;
+    status: string;
+}
 
 const AdminMechanics: React.FC = () => {
     const [selectedFilter, setSelectedFilter] = useState('all');
+    const [mechanics, setMechanics] = useState<Mechanic[] | []>([]);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchMechanics = async () => {
+            try {
+                const response = await getAllMechanics();
+                setMechanics(response.data);
+            } catch (error) {
+                console.error("Error fetching mechanics:", error);
+            }
+        };
+        if(mechanics.length === 0) fetchMechanics();
+    }, []);
+
+    // console.log(mechanics);
+    
     
     const filteredMechanics = mechanics.filter(mechanic => {
         switch (selectedFilter) {
             case 'available':
-                return mechanic.availability === 'Available';
+                return mechanic.status === 'available';
             case 'highly-rated':
                 return mechanic.rating >= 4.8;
             case 'experienced':
@@ -71,11 +106,14 @@ const AdminMechanics: React.FC = () => {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {filteredMechanics.map(mechanic => (
-                                <tr key={mechanic.id}>
+                                <tr key={mechanic._id}
+                                onClick={() => navigate(`/admin/mechanic/${mechanic._id}`)}
+                                className='cursor-pointer hover:bg-gray-50'
+                                >
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <img
-                                                src={mechanic.image}
+                                                src={mechanic.avatar}
                                                 alt={mechanic.name}
                                                 className="h-8 w-8 rounded-full object-cover mr-2"
                                             />
@@ -99,7 +137,7 @@ const AdminMechanics: React.FC = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <MapPin className="h-4 w-4 text-gray-400 mr-1" />
-                                            <span className="text-sm text-gray-500">{mechanic.location}</span>
+                                            <span className="text-sm text-gray-500">{mechanic.address}</span>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
@@ -111,14 +149,14 @@ const AdminMechanics: React.FC = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`
                                             px-2 py-1 rounded-full text-xs font-medium
-                                            ${mechanic.availability === 'Available' 
+                                            ${mechanic.status === 'available' 
                                                 ? 'bg-green-100 text-green-800' 
-                                                : mechanic.availability === 'Busy' 
+                                                : mechanic.status === 'busy' 
                                                 ? 'bg-yellow-100 text-yellow-800' 
                                                 : 'bg-red-100 text-red-800'
                                             }
                                         `}>
-                                            {mechanic.availability}
+                                            {mechanic.status}
                                         </span>
                                     </td>
                                 </tr>
@@ -133,68 +171,68 @@ const AdminMechanics: React.FC = () => {
 
 export default AdminMechanics
 
-const mechanics = [
-    {
-    id: 1,
-    name: 'John Smith',
-    specialty: 'Engine Specialist',
-    experience: '15 years',
-    rating: 4.8,
-    reviews: 127,
-    location: 'Downtown Workshop',
-    availability: 'Available',
-    phone: '+1 (555) 123-4567',
-    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
-    },
-    {
-    id: 2,
-    name: 'Maria Rodriguez',
-    specialty: 'Transmission Expert',
-    experience: '12 years',
-    rating: 4.9,
-    reviews: 98,
-    location: 'West Side Garage',
-    availability: 'Busy',
-    phone: '+1 (555) 234-5678',
-    image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
-    },
-    {
-    id: 3,
-    name: 'David Chen',
-    specialty: 'Electrical Systems',
-    experience: '10 years',
-    rating: 4.7,
-    reviews: 85,
-    location: 'East End Auto',
-    availability: 'Left',
-    phone: '+1 (555) 345-6789',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
-    },
-    {
-    id: 4,
-    name: 'Sarah Johnson',
-    specialty: 'Brake Specialist',
-    experience: '8 years',
-    rating: 4.6,
-    reviews: 64,
-    location: 'North Side Service',
-    availability: 'Available',
-    phone: '+1 (555) 456-7890',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
-    },
-    {
-    id: 5,
-    name: 'Michael Brown',
-    specialty: 'General Maintenance',
-    experience: '20 years',
-    rating: 4.9,
-    reviews: 156,
-    location: 'Central Auto Care',
-    availability: 'Busy',
-    phone: '+1 (555) 567-8901',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
-    }
-];
+// const mechanics = [
+//     {
+//     id: 1,
+//     name: 'John Smith',
+//     specialty: 'Engine Specialist',
+//     experience: '15 years',
+//     rating: 4.8,
+//     reviews: 127,
+//     location: 'Downtown Workshop',
+//     availability: 'Available',
+//     phone: '+1 (555) 123-4567',
+//     image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
+//     },
+//     {
+//     id: 2,
+//     name: 'Maria Rodriguez',
+//     specialty: 'Transmission Expert',
+//     experience: '12 years',
+//     rating: 4.9,
+//     reviews: 98,
+//     location: 'West Side Garage',
+//     availability: 'Busy',
+//     phone: '+1 (555) 234-5678',
+//     image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
+//     },
+//     {
+//     id: 3,
+//     name: 'David Chen',
+//     specialty: 'Electrical Systems',
+//     experience: '10 years',
+//     rating: 4.7,
+//     reviews: 85,
+//     location: 'East End Auto',
+//     availability: 'Left',
+//     phone: '+1 (555) 345-6789',
+//     image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
+//     },
+//     {
+//     id: 4,
+//     name: 'Sarah Johnson',
+//     specialty: 'Brake Specialist',
+//     experience: '8 years',
+//     rating: 4.6,
+//     reviews: 64,
+//     location: 'North Side Service',
+//     availability: 'Available',
+//     phone: '+1 (555) 456-7890',
+//     image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
+//     },
+//     {
+//     id: 5,
+//     name: 'Michael Brown',
+//     specialty: 'General Maintenance',
+//     experience: '20 years',
+//     rating: 4.9,
+//     reviews: 156,
+//     location: 'Central Auto Care',
+//     availability: 'Busy',
+//     phone: '+1 (555) 567-8901',
+//     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80'
+//     }
+// ];
 
 const filters = [
     { id: 'all', label: 'All Mechanics' },

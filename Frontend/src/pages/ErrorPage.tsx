@@ -1,17 +1,23 @@
-import { useRouteError } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Home } from 'lucide-react';
 
-const ErrorPage = () => {
-  const error: any = useRouteError();
-
+const ErrorPage: React.FC = () => {
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gray-900 text-center">
-      <h1 className="text-4xl font-bold text-red-800">Oops! Something went wrong.</h1>
-      <p className="text-gray-600 mt-2">
-        {error?.status} - {error?.statusText || "Unexpected error"}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-white p-6">
+      <h1 className="text-6xl font-extrabold text-blue-600 mb-4">404</h1>
+      <p className="text-xl text-gray-700 mb-8">
+        Oops! We can’t find the page you’re looking for.
       </p>
-      <a href="/" className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
-        Go Back Home
-      </a>
+      <div className="flex space-x-4">
+        <Link
+          to="/"
+          className="flex items-center px-5 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+        >
+          <Home className="w-5 h-5 mr-2" />
+          Go Home
+        </Link>
+      </div>
     </div>
   );
 };

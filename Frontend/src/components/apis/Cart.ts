@@ -4,7 +4,7 @@ const cartId = JSON.parse(localStorage.getItem("user") || "{}").cartId;
 
 export const addToCart = async (service: string, carDetails: string) => {
     try {
-        console.log(cartId);
+        // console.log(cartId);
         
         const data = {
             service,

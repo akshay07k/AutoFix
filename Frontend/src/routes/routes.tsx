@@ -18,6 +18,9 @@ import OrderHistory from "../components/book/OrderHistory";
 import ThankYou from "../components/book/Thankyou";
 import Login from "../components/auth/Login";
 import Signup from "../components/auth/Signup";
+import MechanicProfile from "../admin/pages/MechanicProfile";
+import AddMechanic from "../admin/pages/AddMechanic";
+import AdminGuard from "./AdminGaurd";
 
 export const router = createBrowserRouter([
     {
@@ -87,7 +90,11 @@ export const router = createBrowserRouter([
     },
     {
         path: "/admin",
-        element: <Admin />,
+        element: (
+            <AdminGuard>
+                <Admin />
+            </AdminGuard>
+        ),
         errorElement: <ErrorPage />,
         children: [
             {
@@ -101,6 +108,14 @@ export const router = createBrowserRouter([
             {
                 path: "mechanics",
                 element: <Mechanics />
+            },
+            {
+                path: "mechanic/:mechanicId",
+                element: <MechanicProfile />
+            },
+            {
+                path: "add-mechanic/:id?",
+                element: <AddMechanic />
             },
             {
                 path: "orders",
