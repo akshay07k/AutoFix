@@ -53,9 +53,12 @@ const CircularReviewScroller = () => {
           <div className="flex flex-col justify-between gap-4">
             <div>
               <h2 className="text-lg font-semibold text-gray-800">AutoFix</h2>
+              <p
+              className="text-sm text-gray-500"
+              >Instant Vehicle Service Booking</p>
               <p className="text-sm text-gray-600">⭐ 4.3 Rating</p>
             </div>
-            <Button className="mt-2 bg-blue-500 text-white p-2 rounded-lg font-medium">Write a review</Button>
+            {/* <Button className="mt-2 bg-blue-500 text-white p-2 rounded-lg font-medium">Write a review</Button> */}
           </div>
         </div>
 

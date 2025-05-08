@@ -133,9 +133,9 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, isOpen, toggleOrder }) => 
           
           {/* Action Buttons */}
           <div className="flex justify-end mt-6 space-x-3">
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+            {/* <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
               Contact Support
-            </button>
+            </button> */}
             {order.status == "Pending"  && (
               <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent ro`unded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
               onClick={() => updateStatus(order._id, "Confirmed")}
