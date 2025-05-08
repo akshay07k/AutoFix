@@ -50,7 +50,7 @@ const Consultation: React.FC = () => {
       {/* Hero Section */}
       <div className="relative h-[300px] rounded-2xl overflow-hidden mb-12">
         <img
-          src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1920&q=80"
+          src="https://media.istockphoto.com/id/1090377962/photo/car-technical-service-checking.webp?a=1&b=1&s=612x612&w=0&k=20&c=SZM4MRAn_lMs3cHFHawbeZ20X7y7UenBzvtgZOm1NuM="
           alt="Mechanic discussing with customer"
           className="w-full h-full object-cover"
         />

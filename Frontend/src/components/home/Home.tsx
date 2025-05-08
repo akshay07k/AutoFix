@@ -3,8 +3,9 @@ import { ArrowRight, Settings } from "lucide-react"
 import { Button } from '../ui'
 import { MovingCar, CustomerReview } from '..'
 import { Link } from 'react-router-dom'
-
+import h2 from '../../assets/h2.png'
 const Home: React.FC = () => {
+  
   return (
     <>
       <main className="flex-1">
@@ -13,7 +14,8 @@ const Home: React.FC = () => {
           {/* Background Image */}
           <div className="absolute inset-0">
           <img
-            src="https://images.pexels.com/photos/30562891/pexels-photo-30562891/free-photo-of-outdoor-vehicle-storage-system-with-toolbox.jpeg?auto=compress&cs=tinysrgb&w=1200"
+            // src="https://images.pexels.com/photos/30562891/pexels-photo-30562891/free-photo-of-outdoor-vehicle-storage-system-with-toolbox.jpeg?auto=compress&cs=tinysrgb&w=1200"
+            src={h2}
             alt="Background"
             className="absolute inset-0 w-full h-full object-cover opacity-60"
             />
@@ -23,19 +25,18 @@ const Home: React.FC = () => {
 
           {/* Content */}
           <div className="relative container flex flex-col items-center justify-center min-h-screen text-center px-4" id='about-us'>
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-white mb-6 [text-shadow:_0_4px_12px_rgb(0_0_0_/_20%)]">
+            <h1 className="text-3xl sm:text-6xl md:text-6xl font-bold tracking-tighter text-white mb-6 [text-shadow:_0_4px_12px_rgb(0_0_0_/_20%)]">
               <span className="block mb-4 [text-shadow:_0_4px_12px_rgb(0_0_0_/_20%)]">
               Hassle-Free Car Maintenance</span>
               <span className="text-blue-400 italic font-light">Anytime, </span>
               <span className="text-gray-300 italic font-light">Anywhere</span>
             </h1>
-            <p className="max-w-[600px] text-gray-300 text-lg md:text-xl mb-12">
+            <p className="max-w-[600px] text-gray-300 text-md md:text-lg mb-12">
             Get professional auto repair and maintenance at your doorstep—fast, reliable, and affordable.
             </p>
             <Link to={'/services'}>
             <Button
-              text-size="lg"
-              className="text-white px-8 py-6 text-lg rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:scale-105"
+              className="text-white px-6 py-5 text-md rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:scale-105"
             >
               Book a Service
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -45,7 +46,8 @@ const Home: React.FC = () => {
         </section>
 
         {/* About Us */}
-        <section className="relative overflow-hidden flex flex-col lg:flex-row items-center justify-center px-12 sm:px-24 bg-white gap-8 py-8">
+        <section
+        id='about-us' className="relative overflow-hidden flex flex-col lg:flex-row items-center justify-center px-12 sm:px-24 bg-white gap-8 py-8">
           <div className="w-full lg:w-1/2 grid grid-cols-2 gap-1 md:p-14">
             <img src="https://media.istockphoto.com/id/1036063284/photo/car-lifting.jpg?b=1&s=612x612&w=0&k=20&c=K5joSf0xaoxQEexdDi30AGmUSGvgmSwU5bRg0CLBdK0=" 
             alt="AutoFix 1" 

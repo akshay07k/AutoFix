@@ -10,7 +10,7 @@ const AdminGuard: React.FC<AdminGuardProps> = ({ children }) => {
     const parsedUser = user ? JSON.parse(user) : null;
 
     if (!parsedUser || parsedUser.role !== "admin") {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/" replace />;
     }
 
     return <>{children}</>;

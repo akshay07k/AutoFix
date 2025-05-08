@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
 import { Button, Avatar, AvatarImage, AvatarFallback } from "../ui";
 import MainNav from "./MainNav";
@@ -28,11 +28,14 @@ const Header: React.FC = () => {
     navigate("/");
   }
   
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+  const positionClass = isHomePage ? "fixed" : "sticky";
   
 
   return (
     <>
-    <header className="sticky top-0 z-50 w-full border-b border-gray-700 bg-black/95 backdrop-blur-sm supports-[backdrop-filter]:bg-black/70 px-4 md:px-16">
+    <header className={`${positionClass} top-0 z-50 w-full border-b border-gray-700 bg-black/35 backdrop-blur-sm supports-[backdrop-filter]:bg-black/50 px-4 md:px-16`}>
       <div className="container flex h-16 items-center gap-4">
         <div className="flex items-center gap-6">
           <Link to="/" className="flex items-center space-x-2">

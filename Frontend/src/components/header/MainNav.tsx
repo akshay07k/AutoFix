@@ -5,6 +5,10 @@ import { ChevronDown } from "lucide-react";
 
 const items = [
   {
+    title: "Home",
+    href: "/",
+  },
+  {
     title: "Services",
     href: "/services",
     icon: <ChevronDown className="h-4 w-4 inline-block ml-1" />,
@@ -12,11 +16,7 @@ const items = [
   },
   {
     title: "How it Works",
-    href: "#about-us",
-  },
-  {
-    title: "Reviews",
-    href: "#reviews",
+    href: "/how-it-works",
   },
   {
     title: "Book Appointment",
@@ -63,8 +63,7 @@ const MainNav: React.FC<{ className?: string }> = ({ className }) => {
             <NavLink
               to={item.href}
               className={({isActive}) => `${isActive ? "text-blue-500 font-semibold" : "text-gray-200 hover:text-white"} text-sm md:text-base transition-all  duration-300 ease-in-out flex items-center `}
-            >
-              {item.title} {item?.icon}
+            >{item.title} {item?.icon}
             </NavLink>
             {/* {isDropdownOpen && (
               <div className="absolute left-0 top-4/5 mt-2 w-48 bg-black/60 backdrop:backdrop-blur shadow-lg rounded-lg">

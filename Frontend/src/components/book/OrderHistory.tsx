@@ -14,6 +14,13 @@ const OrderHistory: React.FC = () => {
     const fetchOrders = async () => {
         try {
             const res = await getBookingsByUser();
+            console.log(res.data);
+            res.data.sort((a: Order, b: Order) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateB.getTime() - dateA.getTime();
+            });
+            
             setOrders(res.data);
         } catch (err) {
             console.error(err);

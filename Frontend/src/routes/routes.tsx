@@ -21,6 +21,7 @@ import Signup from "../components/auth/Signup";
 import MechanicProfile from "../admin/pages/MechanicProfile";
 import AddMechanic from "../admin/pages/AddMechanic";
 import AdminGuard from "./AdminGaurd";
+import HowItWorks from "../pages/HowItWorks";
 
 export const router = createBrowserRouter([
     {
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
             {
                 path: "order-confirmed/:orderId",
                 element: <ThankYou />
+            }, 
+            {
+                path: "how-it-works",
+                element: <HowItWorks />
             }
         ]
     },
